@@ -4,18 +4,16 @@ services:
     image: axoniq/axonserver:latest-jdk-17-dev
     hostname: axonserver-1
     environment:
-      - AXONIQ_AXONSERVER_CLUSTERTEMPLATE_PATH=/axonserver/as-cluster-template.yml
-      - AXONIQ_AXONSERVER_ENTERPRISE_LICENSE-DIRECTORY=/axonserver
-      - SERVER_PORT=8024
-      - AXONIQ_AXONSERVER_PORT=8124
-      - AXONIQ_AXONSERVER_METRICS_GRPC_ENABLED=true
-      - AXONIQ_AXONSERVER_METRICS_GRPC_PROMETHEUS-ENABLED=true
+      axoniq_axonserver_hostname: axonserver-1
+      axoniq_axonserver_autocluster_first: axonserver-1
+      axoniq_axonserver_autocluster_contexts: _admin,opportunity
+      server_port: 8024
+      axoniq_axonserver: PORT=8124
     volumes:
       - axonserver-1-log:/axonserver/log
       - axonserver-1-events:/axonserver/events
       - axonserver-1-data:/axonserver/data
-      - ./axoniq.license:/axonserver/axoniq.license
-      - ./as-cluster-template.yml:/axonserver/as-cluster-template.yml
+      - ./axoniq-server.license:/axonserver/config/axoniq.license
     ports:
       - '8024:8024'
       - '8124:8124'
@@ -27,18 +25,17 @@ services:
     image: axoniq/axonserver:latest-jdk-17-dev
     hostname: axonserver-2
     environment:
-      - AXONIQ_AXONSERVER_CLUSTERTEMPLATE_PATH=/axonserver/as-cluster-template.yml
-      - AXONIQ_AXONSERVER_ENTERPRISE_LICENSE-DIRECTORY=/axonserver
-      - SERVER_PORT=8025
-      - AXONIQ_AXONSERVER_PORT=8125
-      - AXONIQ_AXONSERVER_METRICS_GRPC_ENABLED=true
-      - AXONIQ_AXONSERVER_METRICS_GRPC_PROMETHEUS-ENABLED=true
+      axoniq_axonserver_hostname: axonserver-1
+      axoniq_axonserver_autocluster_first: axonserver-1
+      axoniq_axonserver_autocluster_contexts: _admin,opportunity
+      server_port: 8025
+      axoniq_axonserver_port: 8125
+
     volumes:
       - axonserver-2-log:/axonserver/log
       - axonserver-2-events:/axonserver/events
       - axonserver-2-data:/axonserver/data
-      - ./axoniq.license:/axonserver/axoniq.license
-      - ./as-cluster-template.yml:/axonserver/as-cluster-template.yml
+      - ./axoniq-server.license:/axonserver/config/axoniq.license
     ports:
       - '8025:8025'
       - '8125:8125'
@@ -50,18 +47,16 @@ services:
     image: axoniq/axonserver:latest-jdk-17-dev
     hostname: axonserver-3
     environment:
-      - AXONIQ_AXONSERVER_CLUSTERTEMPLATE_PATH=/axonserver/as-cluster-template.yml
-      - AXONIQ_AXONSERVER_ENTERPRISE_LICENSE-DIRECTORY=/axonserver
-      - SERVER_PORT=8026
-      - AXONIQ_AXONSERVER_PORT=8126
-      - AXONIQ_AXONSERVER_METRICS_GRPC_ENABLED=true
-      - AXONIQ_AXONSERVER_METRICS_GRPC_PROMETHEUS-ENABLED=true
+      axoniq_axonserver_hostname: axonserver-1
+      axoniq_axonserver_autocluster_first: axonserver-1
+      axoniq_axonserver_autocluster_contexts: _admin,opportunity
+      server_port: 8026
+      axoniq_axonserver_port: 8126
     volumes:
       - axonserver-3-log:/axonserver/log
       - axonserver-3-events:/axonserver/events
       - axonserver-3-data:/axonserver/data
-      - ./axoniq.license:/axonserver/axoniq.license
-      - ./as-cluster-template.yml:/axonserver/as-cluster-template.yml
+      - ./axoniq-server.license:/axonserver/config/axoniq.license
     ports:
       - '8026:8026'
       - '8126:8126'
@@ -71,14 +66,23 @@ services:
 
 volumes:
   axonserver-1-log:
+    driver: local
   axonserver-1-events:
+    driver: local
   axonserver-1-data:
+    driver: local
   axonserver-2-log:
+    driver: local
   axonserver-2-events:
+    driver: local
   axonserver-2-data:
+    driver: local
   axonserver-3-log:
+    driver: local
   axonserver-3-events:
+    driver: local
   axonserver-3-data:
+    driver: local
 
 networks:
   axon-net:
