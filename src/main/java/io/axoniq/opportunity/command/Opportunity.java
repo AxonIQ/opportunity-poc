@@ -11,35 +11,37 @@ import io.axoniq.opportunity.coreapi.OpportunityClosedWonEvent;
 import io.axoniq.opportunity.coreapi.OpportunityId;
 import io.axoniq.opportunity.coreapi.OpportunityOpenedEvent;
 import io.axoniq.opportunity.coreapi.OpportunityPitchedEvent;
-import io.axoniq.opportunity.coreapi.OpportunityRFPdEvent;
 import io.axoniq.opportunity.coreapi.OpportunityStage;
 import io.axoniq.opportunity.coreapi.PitchOpportunityCommand;
 import io.axoniq.opportunity.coreapi.QuoteApprovedEvent;
 import io.axoniq.opportunity.coreapi.QuoteCreatedEvent;
 import io.axoniq.opportunity.coreapi.QuoteId;
 import io.axoniq.opportunity.coreapi.QuoteValidityCannotExceedEndDate;
-import io.axoniq.opportunity.coreapi.RFPOpportunityCommand;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.deadline.annotation.DeadlineHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateMember;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 
-import static io.axoniq.opportunity.coreapi.OpportunityStage.CLOSED_WON;
+import static io.axoniq.opportunity.coreapi.OpportunityStage.*;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate
 class Opportunity {
 
+    static final String OPPORTUNITY_ENDED = "Opportunity Ended";
+
     @AggregateIdentifier
     private OpportunityId opportunityId;
+    private OpportunityStage stage;
     private Instant endDate;
     @AggregateMember
     private Map<QuoteId, Quote> quotes;
-    private OpportunityStage stage;
 
     public Opportunity() {
         // No-arg constructor required by Axon for Event Sourcing
@@ -47,8 +49,9 @@ class Opportunity {
 
     public Opportunity(OpportunityId opportunityId,
                        AccountId accountId,
-                       String name) {
-        apply(new OpportunityOpenedEvent(opportunityId, accountId, name));
+                       String name,
+                       Instant endDate) {
+        apply(new OpportunityOpenedEvent(opportunityId, accountId, name, endDate));
     }
 
     @CommandHandler
@@ -60,11 +63,6 @@ class Opportunity {
             throw OpportunityAlreadyHasApprovedQuoteException.createNewQuoteException(opportunityId);
         }
         apply(new QuoteCreatedEvent(opportunityId, command.getName(), command.getValidUntil(), command.getProducts()));
-    }
-
-    @CommandHandler
-    public void handle(RFPOpportunityCommand command) {
-        apply(new OpportunityRFPdEvent(opportunityId));
     }
 
     @CommandHandler
@@ -93,9 +91,19 @@ class Opportunity {
         apply(new QuoteApprovedEvent(opportunityId, command.getQuoteId()));
     }
 
+    @DeadlineHandler(deadlineName = OPPORTUNITY_ENDED)
+    public void on() {
+        // TODO Emmett - I assume this event should not be published given a certain state?
+        apply(new OpportunityClosedLostEvent(opportunityId));
+    }
+
     @EventSourcingHandler
     public void on(OpportunityOpenedEvent event) {
+        // Add explaining comment
         opportunityId = event.getOpportunityId();
+        stage = RFP;
+        endDate = event.getEndDate();
+        quotes = new HashMap<>();
     }
 
     @EventSourcingHandler
@@ -106,6 +114,13 @@ class Opportunity {
 
     @EventSourcingHandler
     public void on(QuoteApprovedEvent event) {
+        // TODO Emmett - I assume this stage should ensure other commands are no longer handled?
         this.stage = CLOSED_WON;
+    }
+
+    @EventSourcingHandler
+    public void on(OpportunityClosedLostEvent event) {
+        // TODO Emmett - I assume this stage should ensure other commands are no longer handled?
+        this.stage = CLOSED_LOST;
     }
 }

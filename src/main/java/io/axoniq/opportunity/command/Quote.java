@@ -7,6 +7,7 @@ import io.axoniq.opportunity.coreapi.QuoteApprovedEvent;
 import io.axoniq.opportunity.coreapi.QuoteId;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.modelling.command.EntityId;
 
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 class Quote {
 
     private final OpportunityId opportunityId;
+    @EntityId
     private final QuoteId quoteId;
     private final String name;
 

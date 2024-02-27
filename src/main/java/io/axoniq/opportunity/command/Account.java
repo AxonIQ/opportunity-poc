@@ -5,6 +5,7 @@ import io.axoniq.opportunity.coreapi.AccountId;
 import io.axoniq.opportunity.coreapi.CreateAccountCommand;
 import io.axoniq.opportunity.coreapi.OpenOpportunityCommand;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.deadline.DeadlineManager;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateCreationPolicy;
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -16,6 +17,8 @@ import static org.axonframework.modelling.command.AggregateLifecycle.createNew;
 
 @Aggregate
 class Account {
+
+    static final String OPPORTUNITY_ENDED = "Opportunity Ended";
 
     @AggregateIdentifier
     private AccountId accountId;
@@ -31,11 +34,14 @@ class Account {
     }
 
     @CommandHandler
-    public void handle(OpenOpportunityCommand command) throws Exception {
+    public void handle(OpenOpportunityCommand command,
+                       DeadlineManager deadlineManager) throws Exception {
         createNew(
                 Opportunity.class,
-                () -> new Opportunity(command.getOpportunityId(), accountId, command.getName())
+                () -> new Opportunity(command.getOpportunityId(), accountId, command.getName(), command.getEndDate())
         );
+        // TODO Emmett - Under what circumstances/states should we cancel this deadline?
+        deadlineManager.schedule(command.getEndDate(), OPPORTUNITY_ENDED);
     }
 
     @EventSourcingHandler
