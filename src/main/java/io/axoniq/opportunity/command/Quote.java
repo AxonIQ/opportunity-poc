@@ -8,6 +8,8 @@ import io.axoniq.opportunity.coreapi.QuoteId;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 
+import java.util.Objects;
+
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 class Quote {
@@ -39,5 +41,27 @@ class Quote {
         return name;
     }
 
-    // TODO add equals/hashcode
+    public boolean isApproved() {
+        return approved;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Quote quote = (Quote) o;
+        return approved == quote.approved
+                && Objects.equals(opportunityId, quote.opportunityId)
+                && Objects.equals(quoteId, quote.quoteId)
+                && Objects.equals(name, quote.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(opportunityId, quoteId, name, approved);
+    }
 }

@@ -56,6 +56,9 @@ class Opportunity {
         if (command.getValidUntil().isAfter(endDate)) {
             throw new QuoteValidityCannotExceedEndDate(command.getName(), endDate, opportunityId);
         }
+        if (quotes.values().stream().anyMatch(Quote::isApproved)) {
+            throw OpportunityAlreadyHasApprovedQuoteException.createNewQuoteException(opportunityId);
+        }
         apply(new QuoteCreatedEvent(opportunityId, command.getName(), command.getValidUntil(), command.getProducts()));
     }
 
@@ -82,7 +85,7 @@ class Opportunity {
     @CommandHandler
     public void handle(ApproveQuoteCommand command) {
         if (stage == CLOSED_WON) {
-            throw new OpportunityAlreadyHasApprovedQuoteException(
+            throw OpportunityAlreadyHasApprovedQuoteException.approveSecondQuoteException(
                     quotes.get(command.getQuoteId()).getName(),
                     opportunityId
             );
