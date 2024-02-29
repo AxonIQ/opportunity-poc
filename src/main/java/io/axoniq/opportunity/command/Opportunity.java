@@ -53,6 +53,7 @@ class Opportunity {
 
     @CommandHandler
     public void handle(CreateQuoteCommand command) {
+        // TODO Emmett - Should the quote's valid until set a deadline that automatically rejects the quote?
         if (command.getValidUntil().isAfter(endDate)) {
             throw new QuoteValidityCannotExceedEndDate(command.getName(), endDate, opportunityId);
         }

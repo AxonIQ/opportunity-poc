@@ -27,9 +27,9 @@ class Quote {
     private final OpportunityId opportunityId;
     private final String name;
     private final List<ProductId> reservedProducts;
-
     // TODO Emmett - How would you envision the "draft" state to be incorporated here? Is it needed for validation?
     private boolean approved;
+    // TODO Emmett - Should quotes have a DIFFERENT validUntil timestamp from the Opportunity? If yes, this adjusts the saga logic
 
     Quote(QuoteId quoteId, OpportunityId opportunityId, String name) {
         this.quoteId = quoteId;
@@ -52,6 +52,11 @@ class Quote {
             return;
         }
         apply(new ProductRemovedFromQuoteEvent(opportunityId, quoteId, productId, command.getReason()));
+    }
+
+    @CommandHandler
+    public void handle(RejectQuoteCommand command) {
+        apply(new QuoteRejectedEvent(opportunityId, quoteId));
     }
 
     @EventSourcingHandler
