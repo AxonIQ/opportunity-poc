@@ -6,12 +6,14 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
+// TODO Emmett - Or call this PitchQuoteCommand, as sellers are pitching a quote (from shared doc)?
 public class CreateQuoteCommand {
 
     @TargetAggregateIdentifier
     private final OpportunityId opportunityId;
     private final String name;
     private final Instant validUntil;
+    // TODO Emmett - Are all the products part of the Quote ASAP? Or can they also be added later?
     private final List<ProductLineItem> products;
 
     public CreateQuoteCommand(OpportunityId opportunityId,
