@@ -64,6 +64,7 @@ class OpportunityInventoryProcessManager {
     @EndSaga
     @SagaEventHandler(associationProperty = "opportunityId")
     public void on(OpportunityClosedWonEvent event) {
+        // TODO Emmett - Not described at all, but I assume we do not need the saga anymore on a Closed Won or Closed Lost
         // Do nothing - @EndSaga already cleans this process
     }
 
