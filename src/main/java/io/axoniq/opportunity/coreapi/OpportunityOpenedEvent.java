@@ -3,7 +3,7 @@ package io.axoniq.opportunity.coreapi;
 import java.time.Instant;
 import java.util.Objects;
 
-public class OpportunityOpenedEvent {
+public class OpportunityOpenedEvent implements OpportunityStageChangedEvent {
 
     private final OpportunityId opportunityId;
     private final AccountId accountId;
@@ -17,12 +17,18 @@ public class OpportunityOpenedEvent {
         this.endDate = endDate;
     }
 
+    @Override
     public OpportunityId getOpportunityId() {
         return opportunityId;
     }
 
     public AccountId getAccountId() {
         return accountId;
+    }
+
+    @Override
+    public OpportunityStage getStage() {
+        return OpportunityStage.RFP;
     }
 
     public String getName() {
@@ -58,6 +64,7 @@ public class OpportunityOpenedEvent {
     public String toString() {
         return "OpportunityOpenedEvent{" +
                 "opportunityId=" + opportunityId +
+                ", stage=" + OpportunityStage.RFP +
                 ", accountId=" + accountId +
                 ", name='" + name + '\'' +
                 ", endDate=" + endDate +

@@ -2,7 +2,7 @@ package io.axoniq.opportunity.coreapi;
 
 import java.util.Objects;
 
-public class OpportunityClosedLostEvent {
+public class OpportunityClosedLostEvent implements OpportunityStageChangedEvent {
 
     private final OpportunityId opportunityId;
 
@@ -10,8 +10,14 @@ public class OpportunityClosedLostEvent {
         this.opportunityId = opportunityId;
     }
 
+    @Override
     public OpportunityId getOpportunityId() {
         return opportunityId;
+    }
+
+    @Override
+    public OpportunityStage getStage() {
+        return OpportunityStage.CLOSED_LOST;
     }
 
     @Override
@@ -35,6 +41,7 @@ public class OpportunityClosedLostEvent {
     public String toString() {
         return "OpportunityClosedLostEvent{" +
                 "opportunityId=" + opportunityId +
+                ", stage==" + OpportunityStage.CLOSED_LOST +
                 '}';
     }
 }

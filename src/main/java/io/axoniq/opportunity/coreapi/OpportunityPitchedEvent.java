@@ -2,7 +2,8 @@ package io.axoniq.opportunity.coreapi;
 
 import java.util.Objects;
 
-public class OpportunityPitchedEvent {
+// TODO Emmett - Is this event interesting in its own right?
+public class OpportunityPitchedEvent implements OpportunityStageChangedEvent {
 
     private final OpportunityId opportunityId;
 
@@ -10,8 +11,14 @@ public class OpportunityPitchedEvent {
         this.opportunityId = opportunityId;
     }
 
+    @Override
     public OpportunityId getOpportunityId() {
         return opportunityId;
+    }
+
+    @Override
+    public OpportunityStage getStage() {
+        return OpportunityStage.PITCHED;
     }
 
     @Override
@@ -35,6 +42,7 @@ public class OpportunityPitchedEvent {
     public String toString() {
         return "OpportunityPitchedEvent{" +
                 "opportunityId=" + opportunityId +
+                ", stage==" + OpportunityStage.PITCHED +
                 '}';
     }
 }

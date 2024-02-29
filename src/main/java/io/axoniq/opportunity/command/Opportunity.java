@@ -2,8 +2,6 @@ package io.axoniq.opportunity.command;
 
 import io.axoniq.opportunity.coreapi.AccountId;
 import io.axoniq.opportunity.coreapi.ApproveQuoteCommand;
-import io.axoniq.opportunity.coreapi.CloseLostOpportunityCommand;
-import io.axoniq.opportunity.coreapi.CloseWonOpportunityCommand;
 import io.axoniq.opportunity.coreapi.CreateQuoteCommand;
 import io.axoniq.opportunity.coreapi.OpportunityAlreadyHasApprovedQuoteException;
 import io.axoniq.opportunity.coreapi.OpportunityClosedLostEvent;
@@ -12,7 +10,6 @@ import io.axoniq.opportunity.coreapi.OpportunityId;
 import io.axoniq.opportunity.coreapi.OpportunityOpenedEvent;
 import io.axoniq.opportunity.coreapi.OpportunityPitchedEvent;
 import io.axoniq.opportunity.coreapi.OpportunityStage;
-import io.axoniq.opportunity.coreapi.PitchOpportunityCommand;
 import io.axoniq.opportunity.coreapi.QuoteApprovedEvent;
 import io.axoniq.opportunity.coreapi.QuoteCreatedEvent;
 import io.axoniq.opportunity.coreapi.QuoteId;
@@ -62,22 +59,11 @@ class Opportunity {
         if (quotes.values().stream().anyMatch(Quote::isApproved)) {
             throw OpportunityAlreadyHasApprovedQuoteException.createNewQuoteException(opportunityId);
         }
+        if (quotes.isEmpty()) {
+            // TODO Emmett - The first quote moves the Opportunity's stage to PITCHED I assume?
+            apply(new OpportunityPitchedEvent(opportunityId));
+        }
         apply(new QuoteCreatedEvent(opportunityId, command.getName(), command.getValidUntil(), command.getProducts()));
-    }
-
-    @CommandHandler
-    public void handle(PitchOpportunityCommand command) {
-        apply(new OpportunityPitchedEvent(opportunityId));
-    }
-
-    @CommandHandler
-    public void handle(CloseWonOpportunityCommand command) {
-        apply(new OpportunityClosedWonEvent(opportunityId));
-    }
-
-    @CommandHandler
-    public void handle(CloseLostOpportunityCommand command) {
-        apply(new OpportunityClosedLostEvent(opportunityId));
     }
 
     @CommandHandler
@@ -89,6 +75,7 @@ class Opportunity {
             );
         }
         apply(new QuoteApprovedEvent(opportunityId, command.getQuoteId()));
+        apply(new OpportunityClosedWonEvent(opportunityId));
     }
 
     @DeadlineHandler(deadlineName = OPPORTUNITY_ENDED)
@@ -113,7 +100,13 @@ class Opportunity {
     }
 
     @EventSourcingHandler
-    public void on(QuoteApprovedEvent event) {
+    public void on(OpportunityPitchedEvent event) {
+        // TODO Emmett - Should the PITCHED stage block certain operations?
+        this.stage = PITCHED;
+    }
+
+    @EventSourcingHandler
+    public void on(OpportunityClosedWonEvent event) {
         // TODO Emmett - I assume this stage should ensure other commands are no longer handled?
         this.stage = CLOSED_WON;
     }
