@@ -1,20 +1,23 @@
 package io.axoniq.opportunity.coreapi;
 
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
-
 import java.util.Objects;
 
-public class CloseLostOpportunityCommand {
+public class QuoteRejectedEvent {
 
-    @TargetAggregateIdentifier
     private final OpportunityId opportunityId;
+    private final QuoteId quoteId;
 
-    public CloseLostOpportunityCommand(OpportunityId opportunityId) {
+    public QuoteRejectedEvent(OpportunityId opportunityId, QuoteId quoteId) {
         this.opportunityId = opportunityId;
+        this.quoteId = quoteId;
     }
 
     public OpportunityId getOpportunityId() {
         return opportunityId;
+    }
+
+    public QuoteId getQuoteId() {
+        return quoteId;
     }
 
     @Override
@@ -25,19 +28,21 @@ public class CloseLostOpportunityCommand {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CloseLostOpportunityCommand that = (CloseLostOpportunityCommand) o;
-        return Objects.equals(opportunityId, that.opportunityId);
+        QuoteRejectedEvent that = (QuoteRejectedEvent) o;
+        return Objects.equals(opportunityId, that.opportunityId)
+                && Objects.equals(quoteId, that.quoteId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(opportunityId);
+        return Objects.hash(opportunityId, quoteId);
     }
 
     @Override
     public String toString() {
-        return "CloseLostOpportunityCommand{" +
+        return "QuoteRejectedEvent{" +
                 "opportunityId=" + opportunityId +
+                ", quoteId=" + quoteId +
                 '}';
     }
 }

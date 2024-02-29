@@ -7,6 +7,7 @@ import io.axoniq.opportunity.coreapi.OpportunityOpenedEvent;
 import io.axoniq.opportunity.coreapi.ProductAddedToQuoteEvent;
 import io.axoniq.opportunity.coreapi.ProductId;
 import io.axoniq.opportunity.coreapi.QuoteId;
+import io.axoniq.opportunity.coreapi.QuoteRejectedEvent;
 import io.axoniq.opportunity.coreapi.ReleaseReservationForProductCommand;
 import io.axoniq.opportunity.coreapi.RemoveProductFromQuoteCommand;
 import io.axoniq.opportunity.coreapi.ReserveProductCommand;
@@ -54,6 +55,11 @@ class OpportunityInventoryProcessManager {
                       });
     }
 
+    @SagaEventHandler(associationProperty = "opportunityId")
+    public void on(QuoteRejectedEvent event) {
+        releaseReservedProducts(reservedProductsPerQuote.get(event.getQuoteId()));
+    }
+
     @EndSaga
     @SagaEventHandler(associationProperty = "opportunityId")
     public void on(OpportunityClosedWonEvent event) {
@@ -64,11 +70,15 @@ class OpportunityInventoryProcessManager {
     @SagaEventHandler(associationProperty = "opportunityId")
     public void on(OpportunityClosedLostEvent event) {
         for (Map.Entry<QuoteId, Map<ProductId, Integer>> reservedProducts : reservedProductsPerQuote.entrySet()) {
-            for (Map.Entry<ProductId, Integer> countPerProduct : reservedProducts.getValue().entrySet()) {
-                ProductId productId = countPerProduct.getKey();
-                Integer amount = countPerProduct.getValue();
-                commandGateway.send(new ReleaseReservationForProductCommand(productId, amount));
-            }
+            releaseReservedProducts(reservedProducts.getValue());
+        }
+    }
+
+    private void releaseReservedProducts(Map<ProductId, Integer> reservedProducts) {
+        for (Map.Entry<ProductId, Integer> countPerProduct : reservedProducts.entrySet()) {
+            ProductId productId = countPerProduct.getKey();
+            Integer amount = countPerProduct.getValue();
+            commandGateway.send(new ReleaseReservationForProductCommand(productId, amount));
         }
     }
 }

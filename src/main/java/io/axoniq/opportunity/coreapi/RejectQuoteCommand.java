@@ -4,17 +4,24 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.util.Objects;
 
-public class CloseWonOpportunityCommand {
+// TODO Emmett - Does the RejectQuoteCommand need to life, or is the deadline for this sufficient?
+public class RejectQuoteCommand {
 
     @TargetAggregateIdentifier
     private final OpportunityId opportunityId;
+    private final QuoteId quoteId;
 
-    public CloseWonOpportunityCommand(OpportunityId opportunityId) {
+    public RejectQuoteCommand(OpportunityId opportunityId, QuoteId quoteId) {
         this.opportunityId = opportunityId;
+        this.quoteId = quoteId;
     }
 
     public OpportunityId getOpportunityId() {
         return opportunityId;
+    }
+
+    public QuoteId getQuoteId() {
+        return quoteId;
     }
 
     @Override
@@ -25,19 +32,21 @@ public class CloseWonOpportunityCommand {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CloseWonOpportunityCommand that = (CloseWonOpportunityCommand) o;
-        return Objects.equals(opportunityId, that.opportunityId);
+        RejectQuoteCommand that = (RejectQuoteCommand) o;
+        return Objects.equals(opportunityId, that.opportunityId)
+                && Objects.equals(quoteId, that.quoteId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(opportunityId);
+        return Objects.hash(opportunityId, quoteId);
     }
 
     @Override
     public String toString() {
-        return "CloseWonOpportunityCommand{" +
+        return "RejectQuoteCommand{" +
                 "opportunityId=" + opportunityId +
+                ", quoteId=" + quoteId +
                 '}';
     }
 }
