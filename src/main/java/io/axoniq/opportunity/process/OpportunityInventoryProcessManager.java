@@ -40,4 +40,10 @@ class OpportunityInventoryProcessManager {
                           return null;
                       });
     }
+
+    @EndSaga
+    @SagaEventHandler(associationProperty = "opportunityId")
+    public void on(OpportunityClosedWonEvent event) {
+        // Do nothing - @EndSaga already cleans this process
+    }
 }
