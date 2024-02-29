@@ -1,0 +1,51 @@
+package io.axoniq.opportunity.command.sellers;
+
+import io.axoniq.opportunity.coreapi.account.AccountCreatedEvent;
+import io.axoniq.opportunity.coreapi.account.AccountId;
+import io.axoniq.opportunity.coreapi.account.CreateAccountCommand;
+import io.axoniq.opportunity.coreapi.opportunity.OpenOpportunityCommand;
+import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.deadline.DeadlineManager;
+import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.modelling.command.AggregateCreationPolicy;
+import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.modelling.command.CreationPolicy;
+import org.axonframework.spring.stereotype.Aggregate;
+
+import static org.axonframework.modelling.command.AggregateLifecycle.apply;
+import static org.axonframework.modelling.command.AggregateLifecycle.createNew;
+
+@Aggregate
+class Account {
+
+    static final String OPPORTUNITY_ENDED = "Opportunity Ended";
+
+    @AggregateIdentifier
+    private AccountId accountId;
+
+    public Account() {
+        // No-arg constructor required by Axon for Event Sourcing
+    }
+
+    @CommandHandler
+    @CreationPolicy(AggregateCreationPolicy.ALWAYS)
+    public void handle(CreateAccountCommand command) {
+        apply(new AccountCreatedEvent(command.getAccountId(), command.getName()));
+    }
+
+    @CommandHandler
+    public void handle(OpenOpportunityCommand command,
+                       DeadlineManager deadlineManager) throws Exception {
+        createNew(
+                Opportunity.class,
+                () -> new Opportunity(command.getOpportunityId(), accountId, command.getName(), command.getEndDate())
+        );
+        // TODO Emmett - Under what circumstances/states should we cancel this deadline?
+        deadlineManager.schedule(command.getEndDate(), OPPORTUNITY_ENDED);
+    }
+
+    @EventSourcingHandler
+    public void on(AccountCreatedEvent event) {
+        accountId = event.getAccountId();
+    }
+}

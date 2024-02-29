@@ -1,16 +1,17 @@
 package io.axoniq.opportunity.process;
 
-import io.axoniq.opportunity.coreapi.OpportunityClosedLostEvent;
-import io.axoniq.opportunity.coreapi.OpportunityClosedWonEvent;
-import io.axoniq.opportunity.coreapi.OpportunityId;
-import io.axoniq.opportunity.coreapi.OpportunityOpenedEvent;
-import io.axoniq.opportunity.coreapi.ProductAddedToQuoteEvent;
-import io.axoniq.opportunity.coreapi.ProductId;
-import io.axoniq.opportunity.coreapi.QuoteId;
-import io.axoniq.opportunity.coreapi.QuoteRejectedEvent;
-import io.axoniq.opportunity.coreapi.ReleaseReservationForProductCommand;
-import io.axoniq.opportunity.coreapi.RemoveProductFromQuoteCommand;
-import io.axoniq.opportunity.coreapi.ReserveProductCommand;
+
+import io.axoniq.opportunity.coreapi.opportunity.OpportunityClosedLostEvent;
+import io.axoniq.opportunity.coreapi.opportunity.OpportunityClosedWonEvent;
+import io.axoniq.opportunity.coreapi.opportunity.OpportunityId;
+import io.axoniq.opportunity.coreapi.opportunity.OpportunityOpenedEvent;
+import io.axoniq.opportunity.coreapi.opportunity.quote.ProductAddedToQuoteEvent;
+import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteId;
+import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteRejectedEvent;
+import io.axoniq.opportunity.coreapi.opportunity.quote.RemoveProductFromQuoteCommand;
+import io.axoniq.opportunity.coreapi.product.ProductId;
+import io.axoniq.opportunity.coreapi.product.ReleaseReservationForProductCommand;
+import io.axoniq.opportunity.coreapi.product.ReserveProductCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
