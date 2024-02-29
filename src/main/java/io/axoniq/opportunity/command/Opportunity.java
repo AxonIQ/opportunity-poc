@@ -96,7 +96,7 @@ class Opportunity {
     @EventSourcingHandler
     public void on(QuoteCreatedEvent event) {
         QuoteId quoteId = event.getQuoteId();
-        quotes.put(quoteId, new Quote(opportunityId, quoteId, event.getName()));
+        quotes.put(quoteId, new Quote(quoteId, opportunityId, event.getName()));
     }
 
     @EventSourcingHandler
