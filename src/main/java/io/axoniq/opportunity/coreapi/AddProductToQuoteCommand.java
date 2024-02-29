@@ -44,8 +44,10 @@ public class AddProductToQuoteCommand {
             return false;
         }
         AddProductToQuoteCommand that = (AddProductToQuoteCommand) o;
-        return amount == that.amount && Objects.equals(opportunityId, that.opportunityId)
-                && Objects.equals(quoteId, that.quoteId) && Objects.equals(productId, that.productId);
+        return amount == that.amount
+                && Objects.equals(opportunityId, that.opportunityId)
+                && Objects.equals(quoteId, that.quoteId)
+                && Objects.equals(productId, that.productId);
     }
 
     @Override

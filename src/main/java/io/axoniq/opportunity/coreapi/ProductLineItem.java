@@ -7,7 +7,7 @@ public class ProductLineItem {
     // TODO do we need both ProductId and "identifier"?
     private final ProductId productId;
     private final int identifier;
-    // TODO what's the difference between quantity and amount?
+    // TODO Emmett - What's the difference between quantity and amount?
     private final long quantity;
     private final long amount;
 
@@ -43,7 +43,9 @@ public class ProductLineItem {
             return false;
         }
         ProductLineItem that = (ProductLineItem) o;
-        return identifier == that.identifier && quantity == that.quantity && amount == that.amount
+        return identifier == that.identifier
+                && quantity == that.quantity
+                && amount == that.amount
                 && Objects.equals(productId, that.productId);
     }
 

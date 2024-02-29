@@ -20,7 +20,10 @@ public class QuoteCreatedEvent {
         this(opportunityId, new QuoteId(UUID.randomUUID()), name, validUntil, products);
     }
 
-    public QuoteCreatedEvent(OpportunityId opportunityId, QuoteId quoteId, String name, Instant validUntil,
+    public QuoteCreatedEvent(OpportunityId opportunityId,
+                             QuoteId quoteId,
+                             String name,
+                             Instant validUntil,
                              List<ProductLineItem> products) {
         this.opportunityId = opportunityId;
         this.quoteId = quoteId;
@@ -58,9 +61,10 @@ public class QuoteCreatedEvent {
             return false;
         }
         QuoteCreatedEvent that = (QuoteCreatedEvent) o;
-        return Objects.equals(opportunityId, that.opportunityId) && Objects.equals(quoteId,
-                                                                                   that.quoteId)
-                && Objects.equals(name, that.name) && Objects.equals(validUntil, that.validUntil)
+        return Objects.equals(opportunityId, that.opportunityId)
+                && Objects.equals(quoteId, that.quoteId)
+                && Objects.equals(name, that.name)
+                && Objects.equals(validUntil, that.validUntil)
                 && Objects.equals(products, that.products);
     }
 

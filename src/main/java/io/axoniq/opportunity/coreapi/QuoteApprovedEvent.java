@@ -1,12 +1,9 @@
 package io.axoniq.opportunity.coreapi;
 
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
-
 import java.util.Objects;
 
 public class QuoteApprovedEvent {
 
-    @TargetAggregateIdentifier
     private final OpportunityId opportunityId;
     private final QuoteId quoteId;
 

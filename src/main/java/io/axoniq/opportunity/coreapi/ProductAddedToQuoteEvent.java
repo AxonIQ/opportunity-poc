@@ -41,8 +41,10 @@ public class ProductAddedToQuoteEvent {
             return false;
         }
         ProductAddedToQuoteEvent that = (ProductAddedToQuoteEvent) o;
-        return amount == that.amount && Objects.equals(opportunityId, that.opportunityId)
-                && Objects.equals(quoteId, that.quoteId) && Objects.equals(productId, that.productId);
+        return amount == that.amount
+                && Objects.equals(opportunityId, that.opportunityId)
+                && Objects.equals(quoteId, that.quoteId)
+                && Objects.equals(productId, that.productId);
     }
 
     @Override

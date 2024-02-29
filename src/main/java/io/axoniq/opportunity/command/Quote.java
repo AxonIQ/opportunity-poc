@@ -20,6 +20,7 @@ class Quote {
     private final QuoteId quoteId;
     private final String name;
 
+    // TODO Emmett - How would you envision the "draft" state to be incorporated here? Is it needed for validation?
     private boolean approved;
 
     Quote(OpportunityId opportunityId, QuoteId quoteId, String name) {
@@ -37,6 +38,14 @@ class Quote {
     @EventSourcingHandler
     public void on(QuoteApprovedEvent event) {
         this.approved = true;
+    }
+
+    public OpportunityId getOpportunityId() {
+        return opportunityId;
+    }
+
+    public QuoteId getQuoteId() {
+        return quoteId;
     }
 
     public String getName() {

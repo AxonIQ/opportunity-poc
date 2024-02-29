@@ -8,9 +8,11 @@ public class OpportunityAlreadyHasApprovedQuoteException extends CommandExecutio
         super(message, null);
     }
 
-    public static OpportunityAlreadyHasApprovedQuoteException approveSecondQuoteException(String quoteName, OpportunityId opportunityId) {
+    public static OpportunityAlreadyHasApprovedQuoteException approveSecondQuoteException(String quoteName,
+                                                                                          OpportunityId opportunityId) {
         return new OpportunityAlreadyHasApprovedQuoteException(
-                "Cannot approve quote [" + quoteName + "] since opportunity [" + opportunityId + "] already has an approved quote"
+                "Cannot approve quote [" + quoteName + "] since opportunity [" + opportunityId
+                        + "] already has an approved quote"
         );
     }
 

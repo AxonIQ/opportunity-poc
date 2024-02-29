@@ -1,7 +1,5 @@
 package io.axoniq.opportunity.coreapi;
 
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
-
 import java.util.Objects;
 
 public class AccountCreatedEvent {
