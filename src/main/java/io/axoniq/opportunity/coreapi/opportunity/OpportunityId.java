@@ -11,6 +11,10 @@ public class OpportunityId {
         this(UUID.randomUUID());
     }
 
+    public OpportunityId(String identifier) {
+        this(UUID.fromString(identifier));
+    }
+
     public OpportunityId(UUID identifier) {
         this.identifier = identifier;
     }
