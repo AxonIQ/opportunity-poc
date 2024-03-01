@@ -101,7 +101,6 @@ class Opportunity {
 
     @DeadlineHandler(deadlineName = OPPORTUNITY_ENDED)
     public void on() {
-        // TODO Emmett - I assume this event should not be published given a certain state?
         apply(new OpportunityClosedLostEvent(opportunityId));
     }
 
