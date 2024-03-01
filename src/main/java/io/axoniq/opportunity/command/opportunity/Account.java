@@ -1,4 +1,4 @@
-package io.axoniq.opportunity.command.sellers;
+package io.axoniq.opportunity.command.opportunity;
 
 import io.axoniq.opportunity.coreapi.account.AccountCreatedEvent;
 import io.axoniq.opportunity.coreapi.account.AccountId;
