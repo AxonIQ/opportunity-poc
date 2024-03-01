@@ -7,6 +7,10 @@ public class QuoteId {
 
     private final UUID identifier;
 
+    public QuoteId() {
+        this(UUID.randomUUID());
+    }
+
     public QuoteId(UUID identifier) {
         this.identifier = identifier;
     }

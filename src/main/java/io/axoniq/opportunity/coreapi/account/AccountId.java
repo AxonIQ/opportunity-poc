@@ -8,6 +8,10 @@ public class AccountId {
 
     private final UUID identifier;
 
+    public AccountId() {
+        this(UUID.randomUUID());
+    }
+
     public AccountId(String identifier) {
         this(UUID.fromString(identifier));
     }

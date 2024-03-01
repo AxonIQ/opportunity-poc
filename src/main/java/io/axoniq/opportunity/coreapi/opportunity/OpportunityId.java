@@ -7,6 +7,10 @@ public class OpportunityId {
 
     private final UUID identifier;
 
+    public OpportunityId() {
+        this(UUID.randomUUID());
+    }
+
     public OpportunityId(UUID identifier) {
         this.identifier = identifier;
     }

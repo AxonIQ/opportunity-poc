@@ -7,6 +7,10 @@ public class ProductId {
 
     private final UUID identifier;
 
+    public ProductId() {
+        this(UUID.randomUUID());
+    }
+
     public ProductId(UUID identifier) {
         this.identifier = identifier;
     }
