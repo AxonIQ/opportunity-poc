@@ -3,6 +3,7 @@ package io.axoniq.opportunity.command.sellers;
 import io.axoniq.opportunity.coreapi.account.AccountId;
 
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityAlreadyHasApprovedQuoteException;
+import io.axoniq.opportunity.coreapi.opportunity.OpportunityAlreadyHasPendingQuoteException;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityClosedLostEvent;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityClosedWonEvent;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityId;
@@ -14,17 +15,24 @@ import io.axoniq.opportunity.coreapi.opportunity.quote.PitchQuoteCommand;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteApprovedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuotePitchedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteId;
+import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteRejectedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteValidityCannotExceedEndDate;
+import io.axoniq.opportunity.coreapi.product.ProductId;
+import io.axoniq.opportunity.coreapi.product.ProductLineItem;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.deadline.DeadlineManager;
 import org.axonframework.deadline.annotation.DeadlineHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.modelling.command.AggregateMember;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static io.axoniq.opportunity.coreapi.opportunity.OpportunityStage.*;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
