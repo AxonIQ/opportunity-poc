@@ -11,12 +11,14 @@ import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteRejectedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.quote.RejectQuoteCommand;
 import io.axoniq.opportunity.coreapi.opportunity.quote.RemoveProductFromQuoteCommand;
 import io.axoniq.opportunity.coreapi.product.ProductId;
+import io.axoniq.opportunity.coreapi.product.ProductLineItem;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.EntityId;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
@@ -27,13 +29,20 @@ class Quote {
     private final OpportunityId opportunityId;
     private final String name;
     private final List<ProductId> reservedProducts;
+    private int value;
     private boolean approved;
 
-    Quote(QuoteId quoteId, OpportunityId opportunityId, String name, List<ProductId> reservedProducts) {
+    Quote(QuoteId quoteId, OpportunityId opportunityId, String name, List<ProductLineItem> products) {
         this.quoteId = quoteId;
         this.opportunityId = opportunityId;
         this.name = name;
-        this.reservedProducts = reservedProducts;
+        this.reservedProducts = products.stream()
+                                        .map(ProductLineItem::productId)
+                                        .collect(Collectors.toList());
+        this.value = products.stream()
+                             .map(ProductLineItem::value)
+                             .reduce(Integer::sum)
+                             .orElse(0);
     }
 
     // TODO this command needs to be pre-validated before sending, as it has an inventory requirement
@@ -65,6 +74,7 @@ class Quote {
     @EventSourcingHandler
     public void on(ProductAddedToQuoteEvent event) {
         this.reservedProducts.add(event.product().productId());
+        this.value += event.product().value();
     }
 
     @EventSourcingHandler
@@ -84,6 +94,10 @@ class Quote {
         return approved;
     }
 
+    public int getValue() {
+        return value;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -93,15 +107,15 @@ class Quote {
             return false;
         }
         Quote quote = (Quote) o;
-        return approved == quote.approved
-                && Objects.equals(opportunityId, quote.opportunityId)
+        return value == quote.value && approved == quote.approved
                 && Objects.equals(quoteId, quote.quoteId)
+                && Objects.equals(opportunityId, quote.opportunityId)
                 && Objects.equals(name, quote.name)
                 && Objects.equals(reservedProducts, quote.reservedProducts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(opportunityId, quoteId, name, reservedProducts, approved);
+        return Objects.hash(quoteId, opportunityId, name, reservedProducts, value, approved);
     }
 }

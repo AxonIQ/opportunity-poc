@@ -8,6 +8,7 @@ import io.axoniq.opportunity.coreapi.opportunity.OpportunityId;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityOpenedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityStageChangedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunitySummary;
+import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteApprovedEvent;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -39,9 +40,18 @@ class OpportunityProjector {
     @EventHandler
     public void on(OpportunityStageChangedEvent event) {
         repository.findById(event.opportunityId().toString())
-                  .map(opportunityView -> {
-                      opportunityView.setStage(event.stage());
-                      return opportunityView;
+                  .map(view -> {
+                      view.setStage(event.stage());
+                      return view;
+                  });
+    }
+
+    @EventHandler
+    public void on(QuoteApprovedEvent event) {
+        repository.findById(event.opportunityId().toString())
+                  .map(view -> {
+                      view.setValue(event.value());
+                      return view;
                   });
     }
 
