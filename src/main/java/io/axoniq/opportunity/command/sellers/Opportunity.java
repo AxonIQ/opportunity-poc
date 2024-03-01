@@ -75,13 +75,14 @@ class Opportunity {
     }
 
     @CommandHandler
-    public void handle(ApproveQuoteCommand command) {
+    public void handle(ApproveQuoteCommand command, DeadlineManager deadlineManager) {
         if (stage == CLOSED_WON) {
             throw OpportunityAlreadyHasApprovedQuoteException.approveSecondQuoteException(
                     quotes.get(command.getQuoteId()).getName(),
                     opportunityId
             );
         }
+
         apply(new QuoteApprovedEvent(opportunityId, command.getQuoteId()));
         apply(new OpportunityClosedWonEvent(opportunityId));
         deadlineManager.cancelAllWithinScope(OPPORTUNITY_ENDED);
