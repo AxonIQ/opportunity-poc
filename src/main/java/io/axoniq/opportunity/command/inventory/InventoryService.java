@@ -19,21 +19,21 @@ class InventoryService {
 
     @CommandHandler
     public void handle(ReserveProductCommand command) {
-        ProductId productId = command.getProductId();
+        ProductId productId = command.productId();
         if (!inventory.containsKey(productId)) {
             throw new ProductDoesNotExist(productId);
         }
 
         inventory.computeIfPresent(productId, (id, stock) -> {
-            if (stock - command.getAmount() < 0) {
-                throw new InsufficientStockForProduct(id, command.getAmount());
+            if (stock - command.amount() < 0) {
+                throw new InsufficientStockForProduct(id, command.amount());
             }
-            return stock - command.getAmount();
+            return stock - command.amount();
         });
     }
 
     @CommandHandler
     public void handle(ReleaseReservationForProductCommand command) {
-        inventory.computeIfPresent(command.getProductId(), (productId, stock) -> stock + command.getAmount());
+        inventory.computeIfPresent(command.productId(), (productId, stock) -> stock + command.amount());
     }
 }

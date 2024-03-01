@@ -122,7 +122,7 @@ class Opportunity {
         QuoteId quoteId = event.quoteId();
         List<ProductId> productsToReserve = event.products()
                                                  .stream()
-                                                 .map(ProductLineItem::getProductId)
+                                                 .map(ProductLineItem::productId)
                                                  .collect(Collectors.toList());
         quotes.put(quoteId, new Quote(quoteId, opportunityId, event.name(), productsToReserve));
     }

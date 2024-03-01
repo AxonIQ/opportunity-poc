@@ -64,7 +64,7 @@ class Quote {
 
     @EventSourcingHandler
     public void on(ProductAddedToQuoteEvent event) {
-        this.reservedProducts.add(event.product().getProductId());
+        this.reservedProducts.add(event.product().productId());
     }
 
     @EventSourcingHandler

@@ -53,14 +53,14 @@ class OpportunityInventoryProcessManager {
     }
 
     private void saveAndReserveProduct(QuoteId quoteId, ProductLineItem product) {
-        ProductId productId = product.getProductId();
+        ProductId productId = product.productId();
         reservedProductsPerQuote.compute(quoteId, (qId, products) -> {
             Map<ProductId, Integer> reservedProducts = products == null ? new HashMap<>() : products;
-            reservedProducts.compute(productId, (id, count) -> (count == null ? 0 : count) + product.getAmount());
+            reservedProducts.compute(productId, (id, count) -> (count == null ? 0 : count) + product.amount());
             return reservedProducts;
         });
 
-        commandGateway.send(new ReserveProductCommand(productId, product.getAmount()))
+        commandGateway.send(new ReserveProductCommand(productId, product.amount()))
                       .exceptionally(e -> {
                           commandGateway.send(new RemoveProductFromQuoteCommand(
                                   opportunityId, quoteId, productId, e.getMessage()
