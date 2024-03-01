@@ -7,6 +7,7 @@ import java.time.Instant;
 public record OpportunityOpenedEvent(OpportunityId opportunityId,
                                      AccountId accountId,
                                      String name,
+                                     int value,
                                      Instant endDate) implements OpportunityStageChangedEvent {
 
     @Override

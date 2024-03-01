@@ -8,6 +8,7 @@ import java.time.Instant;
 public record OpenOpportunityCommand(@TargetAggregateIdentifier OpportunityId opportunityId,
                                      AccountId accountId,
                                      String name,
+                                     int value,
                                      Instant endDate) {
 
 }

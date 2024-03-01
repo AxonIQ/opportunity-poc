@@ -57,8 +57,9 @@ class Opportunity {
     public Opportunity(OpportunityId opportunityId,
                        AccountId accountId,
                        String name,
+                       int value,
                        Instant endDate) {
-        apply(new OpportunityOpenedEvent(opportunityId, accountId, name, endDate));
+        apply(new OpportunityOpenedEvent(opportunityId, accountId, name, value, endDate));
     }
 
     @CommandHandler

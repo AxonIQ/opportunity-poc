@@ -42,7 +42,9 @@ class Account {
                        DeadlineManager deadlineManager) throws Exception {
         createNew(
                 Opportunity.class,
-                () -> new Opportunity(command.opportunityId(), accountId, command.name(), command.endDate())
+                () -> new Opportunity(
+                        command.opportunityId(), accountId, command.name(), command.value(), command.endDate()
+                )
         );
         deadlineManager.schedule(command.endDate(), OPPORTUNITY_ENDED);
     }
