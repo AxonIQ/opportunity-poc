@@ -7,9 +7,11 @@ import io.axoniq.opportunity.coreapi.opportunity.OpportunityId;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityOpenedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.quote.ProductAddedToQuoteEvent;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteId;
+import io.axoniq.opportunity.coreapi.opportunity.quote.QuotePitchedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteRejectedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.quote.RemoveProductFromQuoteCommand;
 import io.axoniq.opportunity.coreapi.product.ProductId;
+import io.axoniq.opportunity.coreapi.product.ProductLineItem;
 import io.axoniq.opportunity.coreapi.product.ReleaseReservationForProductCommand;
 import io.axoniq.opportunity.coreapi.product.ReserveProductCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -74,13 +76,6 @@ class OpportunityInventoryProcessManager {
 
     @EndSaga
     @SagaEventHandler(associationProperty = "opportunityId")
-    public void on(OpportunityClosedWonEvent event) {
-        // TODO Emmett - Not described at all, but I assume we do not need the saga anymore on a Closed Won or Closed Lost
-        // Do nothing - @EndSaga already cleans this process
-    }
-
-    @EndSaga
-    @SagaEventHandler(associationProperty = "opportunityId")
     public void on(OpportunityClosedLostEvent event) {
         for (Map.Entry<QuoteId, Map<ProductId, Integer>> reservedProducts : reservedProductsPerQuote.entrySet()) {
             releaseReservedProducts(reservedProducts.getValue());
@@ -93,5 +88,11 @@ class OpportunityInventoryProcessManager {
             Integer amount = countPerProduct.getValue();
             commandGateway.send(new ReleaseReservationForProductCommand(productId, amount));
         }
+    }
+
+    @EndSaga
+    @SagaEventHandler(associationProperty = "opportunityId")
+    public void on(OpportunityClosedWonEvent event) {
+        // Do nothing - @EndSaga already cleans this process
     }
 }
