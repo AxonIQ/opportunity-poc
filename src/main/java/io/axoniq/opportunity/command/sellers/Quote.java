@@ -15,7 +15,6 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.EntityId;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

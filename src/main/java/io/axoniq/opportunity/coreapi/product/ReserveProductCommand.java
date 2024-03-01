@@ -1,13 +1,12 @@
 package io.axoniq.opportunity.coreapi.product;
 
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
+import org.axonframework.commandhandling.RoutingKey;
 
 import java.util.Objects;
 
-// TODO Emmett - Is there a necessity for a ProductReservedEvent, or can we leave that as fill-in for later, as we're dealing with another context anyhow?
 public class ReserveProductCommand {
 
-    @TargetAggregateIdentifier
+    @RoutingKey
     private final ProductId productId;
     private final int amount;
 

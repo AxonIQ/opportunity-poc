@@ -34,6 +34,6 @@ class InventoryService {
 
     @CommandHandler
     public void handle(ReleaseReservationForProductCommand command) {
-        inventory.computeIfPresent(command.getProductKey(), (productId, stock) -> stock + command.getAmount());
+        inventory.computeIfPresent(command.getProductId(), (productId, stock) -> stock + command.getAmount());
     }
 }

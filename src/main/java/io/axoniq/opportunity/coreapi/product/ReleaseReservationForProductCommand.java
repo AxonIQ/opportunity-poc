@@ -7,16 +7,16 @@ import java.util.Objects;
 public class ReleaseReservationForProductCommand {
 
     @RoutingKey
-    private final ProductId productKey;
+    private final ProductId productId;
     private final Integer amount;
 
-    public ReleaseReservationForProductCommand(ProductId productKey, Integer amount) {
-        this.productKey = productKey;
+    public ReleaseReservationForProductCommand(ProductId productId, Integer amount) {
+        this.productId = productId;
         this.amount = amount;
     }
 
-    public ProductId getProductKey() {
-        return productKey;
+    public ProductId getProductId() {
+        return productId;
     }
 
     public Integer getAmount() {
@@ -32,18 +32,18 @@ public class ReleaseReservationForProductCommand {
             return false;
         }
         ReleaseReservationForProductCommand that = (ReleaseReservationForProductCommand) o;
-        return Objects.equals(productKey, that.productKey) && Objects.equals(amount, that.amount);
+        return Objects.equals(productId, that.productId) && Objects.equals(amount, that.amount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productKey, amount);
+        return Objects.hash(productId, amount);
     }
 
     @Override
     public String toString() {
         return "ReleaseReservationForProductCommand{" +
-                "productKey=" + productKey +
+                "productId=" + productId +
                 ", amount=" + amount +
                 '}';
     }
