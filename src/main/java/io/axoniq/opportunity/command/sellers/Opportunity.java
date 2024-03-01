@@ -114,7 +114,11 @@ class Opportunity {
     @EventSourcingHandler
     public void on(QuotePitchedEvent event) {
         QuoteId quoteId = event.getQuoteId();
-        quotes.put(quoteId, new Quote(quoteId, opportunityId, event.getName()));
+        List<ProductId> productsToReserve = event.getProducts()
+                                                 .stream()
+                                                 .map(ProductLineItem::getProductId)
+                                                 .collect(Collectors.toList());
+        quotes.put(quoteId, new Quote(quoteId, opportunityId, event.getName(), productsToReserve));
     }
 
     @EventSourcingHandler

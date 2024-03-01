@@ -32,11 +32,11 @@ class Quote {
     private boolean approved;
     // TODO Emmett - Should quotes have a DIFFERENT validUntil timestamp from the Opportunity? If yes, this adjusts the saga logic
 
-    Quote(QuoteId quoteId, OpportunityId opportunityId, String name) {
+    Quote(QuoteId quoteId, OpportunityId opportunityId, String name, List<ProductId> reservedProducts) {
         this.quoteId = quoteId;
         this.opportunityId = opportunityId;
         this.name = name;
-        this.reservedProducts = new ArrayList<>();
+        this.reservedProducts = reservedProducts;
     }
 
     // TODO this command needs to be pre-validated before sending, as it has an inventory requirement
