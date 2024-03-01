@@ -59,6 +59,9 @@ class Opportunity {
         if (validUntil.isAfter(endDate)) {
             throw new QuoteValidityCannotExceedEndDate(command.getName(), endDate, opportunityId);
         }
+        if (stage == PITCHED) {
+            throw new OpportunityAlreadyHasPendingQuoteException(opportunityId);
+        }
         if (quotes.values().stream().anyMatch(Quote::isApproved)) {
             throw OpportunityAlreadyHasApprovedQuoteException.createNewQuoteException(opportunityId);
         }
@@ -116,7 +119,6 @@ class Opportunity {
 
     @EventSourcingHandler
     public void on(OpportunityPitchedEvent event) {
-        // TODO Emmett - Should the PITCHED stage block certain operations?
         this.stage = PITCHED;
     }
 
