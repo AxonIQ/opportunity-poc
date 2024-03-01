@@ -44,7 +44,6 @@ class Account {
                 Opportunity.class,
                 () -> new Opportunity(command.getOpportunityId(), accountId, command.getName(), command.getEndDate())
         );
-        // TODO Emmett - Under what circumstances/states should we cancel this deadline?
         deadlineManager.schedule(command.getEndDate(), OPPORTUNITY_ENDED);
     }
 

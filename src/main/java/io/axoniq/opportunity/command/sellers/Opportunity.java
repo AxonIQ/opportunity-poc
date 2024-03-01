@@ -78,6 +78,7 @@ class Opportunity {
         }
         apply(new QuoteApprovedEvent(opportunityId, command.getQuoteId()));
         apply(new OpportunityClosedWonEvent(opportunityId));
+        deadlineManager.cancelAllWithinScope(OPPORTUNITY_ENDED);
     }
 
     @DeadlineHandler(deadlineName = OPPORTUNITY_ENDED)
