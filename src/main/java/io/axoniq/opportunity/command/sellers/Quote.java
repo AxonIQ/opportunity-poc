@@ -39,17 +39,17 @@ class Quote {
     // TODO this command needs to be pre-validated before sending, as it has an inventory requirement
     @CommandHandler
     public void handle(AddProductToQuoteCommand command) {
-        apply(new ProductAddedToQuoteEvent(opportunityId, quoteId, command.getProduct()));
+        apply(new ProductAddedToQuoteEvent(opportunityId, quoteId, command.product()));
     }
 
     @CommandHandler
     public void handle(RemoveProductFromQuoteCommand command) {
-        ProductId productId = command.getProductId();
+        ProductId productId = command.productId();
         if (!reservedProducts.contains(productId)) {
             // Ignore this command as we did not reserve this product.
             return;
         }
-        apply(new ProductRemovedFromQuoteEvent(opportunityId, quoteId, productId, command.getReason()));
+        apply(new ProductRemovedFromQuoteEvent(opportunityId, quoteId, productId, command.reason()));
     }
 
     @CommandHandler
@@ -64,12 +64,12 @@ class Quote {
 
     @EventSourcingHandler
     public void on(ProductAddedToQuoteEvent event) {
-        this.reservedProducts.add(event.getProduct().getProductId());
+        this.reservedProducts.add(event.product().getProductId());
     }
 
     @EventSourcingHandler
     public void on(ProductRemovedFromQuoteEvent event) {
-        this.reservedProducts.remove(event.getProductId());
+        this.reservedProducts.remove(event.productId());
     }
 
     public QuoteId getQuoteId() {

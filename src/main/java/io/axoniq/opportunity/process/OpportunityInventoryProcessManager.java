@@ -42,14 +42,14 @@ class OpportunityInventoryProcessManager {
 
     @SagaEventHandler(associationProperty = "opportunityId")
     public void on(QuotePitchedEvent event) {
-        QuoteId quoteId = event.getQuoteId();
-        event.getProducts()
+        QuoteId quoteId = event.quoteId();
+        event.products()
              .forEach(product -> saveAndReserveProduct(quoteId, product));
     }
 
     @SagaEventHandler(associationProperty = "opportunityId")
     public void on(ProductAddedToQuoteEvent event) {
-        saveAndReserveProduct(event.getQuoteId(), event.getProduct());
+        saveAndReserveProduct(event.quoteId(), event.product());
     }
 
     private void saveAndReserveProduct(QuoteId quoteId, ProductLineItem product) {
@@ -71,7 +71,7 @@ class OpportunityInventoryProcessManager {
 
     @SagaEventHandler(associationProperty = "opportunityId")
     public void on(QuoteRejectedEvent event) {
-        releaseReservedProducts(reservedProductsPerQuote.get(event.getQuoteId()));
+        releaseReservedProducts(reservedProductsPerQuote.get(event.quoteId()));
     }
 
     @EndSaga

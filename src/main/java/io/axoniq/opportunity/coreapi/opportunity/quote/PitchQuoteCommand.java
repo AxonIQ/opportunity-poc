@@ -6,70 +6,10 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 
-public class PitchQuoteCommand {
+public record PitchQuoteCommand(@TargetAggregateIdentifier OpportunityId opportunityId,
+                                String name,
+                                Instant validUntil,
+                                List<ProductLineItem> products) {
 
-    @TargetAggregateIdentifier
-    private final OpportunityId opportunityId;
-    private final String name;
-    private final Instant validUntil;
-    // TODO React to these line items in the sage
-    private final List<ProductLineItem> products;
-
-    public PitchQuoteCommand(OpportunityId opportunityId,
-                             String name,
-                             Instant validUntil,
-                             List<ProductLineItem> products) {
-        this.opportunityId = opportunityId;
-        this.name = name;
-        this.validUntil = validUntil;
-        this.products = products;
-    }
-
-    public OpportunityId getOpportunityId() {
-        return opportunityId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Instant getValidUntil() {
-        return validUntil;
-    }
-
-    public List<ProductLineItem> getProducts() {
-        return products;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        PitchQuoteCommand that = (PitchQuoteCommand) o;
-        return Objects.equals(opportunityId, that.opportunityId)
-                && Objects.equals(name, that.name)
-                && Objects.equals(validUntil, that.validUntil)
-                && Objects.equals(products, that.products);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(opportunityId, name, validUntil, products);
-    }
-
-    @Override
-    public String toString() {
-        return "PitchQuoteCommand{" +
-                "opportunityId=" + opportunityId +
-                ", name='" + name + '\'' +
-                ", validUntil=" + validUntil +
-                ", products=" + products +
-                '}';
-    }
 }

@@ -63,9 +63,9 @@ class Opportunity {
 
     @CommandHandler
     public void handle(PitchQuoteCommand command, DeadlineManager deadlineManager) {
-        Instant validUntil = command.getValidUntil();
+        Instant validUntil = command.validUntil();
         if (validUntil.isAfter(endDate)) {
-            throw new QuoteValidityCannotExceedEndDate(command.getName(), endDate, opportunityId);
+            throw new QuoteValidityCannotExceedEndDate(command.name(), endDate, opportunityId);
         }
         if (stage == PITCHED) {
             throw new OpportunityAlreadyHasPendingQuoteException(opportunityId);
@@ -79,7 +79,7 @@ class Opportunity {
         }
         QuoteId quoteId = new QuoteId();
         apply(new QuotePitchedEvent(
-                opportunityId, quoteId, command.getName(), validUntil, command.getProducts()
+                opportunityId, quoteId, command.name(), validUntil, command.products()
         ));
         deadlineManager.schedule(validUntil, QUOTE_ENDED, quoteId);
     }
@@ -88,12 +88,12 @@ class Opportunity {
     public void handle(ApproveQuoteCommand command, DeadlineManager deadlineManager) {
         if (stage == CLOSED_WON) {
             throw OpportunityAlreadyHasApprovedQuoteException.approveSecondQuoteException(
-                    quotes.get(command.getQuoteId()).getName(),
+                    quotes.get(command.quoteId()).getName(),
                     opportunityId
             );
         }
 
-        apply(new QuoteApprovedEvent(opportunityId, command.getQuoteId()));
+        apply(new QuoteApprovedEvent(opportunityId, command.quoteId()));
         apply(new OpportunityClosedWonEvent(opportunityId));
         deadlineManager.cancelAllWithinScope(OPPORTUNITY_ENDED);
     }
@@ -119,12 +119,12 @@ class Opportunity {
 
     @EventSourcingHandler
     public void on(QuotePitchedEvent event) {
-        QuoteId quoteId = event.getQuoteId();
-        List<ProductId> productsToReserve = event.getProducts()
+        QuoteId quoteId = event.quoteId();
+        List<ProductId> productsToReserve = event.products()
                                                  .stream()
                                                  .map(ProductLineItem::getProductId)
                                                  .collect(Collectors.toList());
-        quotes.put(quoteId, new Quote(quoteId, opportunityId, event.getName(), productsToReserve));
+        quotes.put(quoteId, new Quote(quoteId, opportunityId, event.name(), productsToReserve));
     }
 
     @EventSourcingHandler
