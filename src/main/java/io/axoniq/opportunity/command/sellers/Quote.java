@@ -42,7 +42,7 @@ class Quote {
     // TODO this command needs to be pre-validated before sending, as it has an inventory requirement
     @CommandHandler
     public void handle(AddProductToQuoteCommand command) {
-        apply(new ProductAddedToQuoteEvent(opportunityId, quoteId, command.getProductId(), command.getAmount()));
+        apply(new ProductAddedToQuoteEvent(opportunityId, quoteId, command.getProduct()));
     }
 
     @CommandHandler
@@ -67,7 +67,7 @@ class Quote {
 
     @EventSourcingHandler
     public void on(ProductAddedToQuoteEvent event) {
-        this.reservedProducts.add(event.getProductId());
+        this.reservedProducts.add(event.getProduct().getProductId());
     }
 
     @EventSourcingHandler

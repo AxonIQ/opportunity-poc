@@ -40,17 +40,21 @@ class OpportunityInventoryProcessManager {
 
     @SagaEventHandler(associationProperty = "opportunityId")
     public void on(ProductAddedToQuoteEvent event) {
-        ProductId productId = event.getProductId();
-        reservedProductsPerQuote.compute(event.getQuoteId(), (quoteId, products) -> {
+        saveAndReserveProduct(event.getQuoteId(), event.getProduct());
+    }
+
+    private void saveAndReserveProduct(QuoteId quoteId, ProductLineItem product) {
+        ProductId productId = product.getProductId();
+        reservedProductsPerQuote.compute(quoteId, (qId, products) -> {
             Map<ProductId, Integer> reservedProducts = products == null ? new HashMap<>() : products;
-            reservedProducts.compute(productId, (id, count) -> (count == null ? 0 : count) + event.getAmount());
+            reservedProducts.compute(productId, (id, count) -> (count == null ? 0 : count) + product.getAmount());
             return reservedProducts;
         });
 
-        commandGateway.send(new ReserveProductCommand(productId, event.getAmount()))
+        commandGateway.send(new ReserveProductCommand(productId, product.getAmount()))
                       .exceptionally(e -> {
                           commandGateway.send(new RemoveProductFromQuoteCommand(
-                                  opportunityId, event.getQuoteId(), productId, e.getMessage()
+                                  opportunityId, quoteId, productId, e.getMessage()
                           ));
                           return null;
                       });

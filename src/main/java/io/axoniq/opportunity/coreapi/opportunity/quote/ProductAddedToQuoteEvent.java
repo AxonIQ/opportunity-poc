@@ -1,7 +1,7 @@
 package io.axoniq.opportunity.coreapi.opportunity.quote;
 
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityId;
-import io.axoniq.opportunity.coreapi.product.ProductId;
+import io.axoniq.opportunity.coreapi.product.ProductLineItem;
 
 import java.util.Objects;
 
@@ -9,14 +9,12 @@ public class ProductAddedToQuoteEvent {
 
     private final OpportunityId opportunityId;
     private final QuoteId quoteId;
-    private final ProductId productId;
-    private final int amount;
+    private final ProductLineItem product;
 
-    public ProductAddedToQuoteEvent(OpportunityId opportunityId, QuoteId quoteId, ProductId productId, int amount) {
+    public ProductAddedToQuoteEvent(OpportunityId opportunityId, QuoteId quoteId, ProductLineItem product) {
         this.opportunityId = opportunityId;
         this.quoteId = quoteId;
-        this.productId = productId;
-        this.amount = amount;
+        this.product = product;
     }
 
     public OpportunityId getOpportunityId() {
@@ -27,12 +25,8 @@ public class ProductAddedToQuoteEvent {
         return quoteId;
     }
 
-    public ProductId getProductId() {
-        return productId;
-    }
-
-    public int getAmount() {
-        return amount;
+    public ProductLineItem getProduct() {
+        return product;
     }
 
     @Override
@@ -44,15 +38,14 @@ public class ProductAddedToQuoteEvent {
             return false;
         }
         ProductAddedToQuoteEvent that = (ProductAddedToQuoteEvent) o;
-        return amount == that.amount
-                && Objects.equals(opportunityId, that.opportunityId)
+        return Objects.equals(opportunityId, that.opportunityId)
                 && Objects.equals(quoteId, that.quoteId)
-                && Objects.equals(productId, that.productId);
+                && Objects.equals(product, that.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(opportunityId, quoteId, productId, amount);
+        return Objects.hash(opportunityId, quoteId, product);
     }
 
     @Override
@@ -60,8 +53,7 @@ public class ProductAddedToQuoteEvent {
         return "ProductAddedToQuoteEvent{" +
                 "opportunityId=" + opportunityId +
                 ", quoteId=" + quoteId +
-                ", productId=" + productId +
-                ", amount=" + amount +
+                ", product=" + product +
                 '}';
     }
 }
