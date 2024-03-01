@@ -121,13 +121,13 @@ class Opportunity {
 
     @EventSourcingHandler
     public void on(OpportunityClosedWonEvent event) {
-        // TODO Emmett - I assume this stage should ensure other commands are no longer handled?
         this.stage = CLOSED_WON;
+        AggregateLifecycle.markDeleted();
     }
 
     @EventSourcingHandler
     public void on(OpportunityClosedLostEvent event) {
-        // TODO Emmett - I assume this stage should ensure other commands are no longer handled?
         this.stage = CLOSED_LOST;
+        AggregateLifecycle.markDeleted();
     }
 }
