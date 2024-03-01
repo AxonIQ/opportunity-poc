@@ -39,6 +39,13 @@ class OpportunityInventoryProcessManager {
     }
 
     @SagaEventHandler(associationProperty = "opportunityId")
+    public void on(QuotePitchedEvent event) {
+        QuoteId quoteId = event.getQuoteId();
+        event.getProducts()
+             .forEach(product -> saveAndReserveProduct(quoteId, product));
+    }
+
+    @SagaEventHandler(associationProperty = "opportunityId")
     public void on(ProductAddedToQuoteEvent event) {
         saveAndReserveProduct(event.getQuoteId(), event.getProduct());
     }

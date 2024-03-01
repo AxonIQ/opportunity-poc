@@ -10,9 +10,9 @@ import io.axoniq.opportunity.coreapi.opportunity.OpportunityOpenedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityPitchedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityStage;
 import io.axoniq.opportunity.coreapi.opportunity.quote.ApproveQuoteCommand;
-import io.axoniq.opportunity.coreapi.opportunity.quote.CreateQuoteCommand;
+import io.axoniq.opportunity.coreapi.opportunity.quote.PitchQuoteCommand;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteApprovedEvent;
-import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteCreatedEvent;
+import io.axoniq.opportunity.coreapi.opportunity.quote.QuotePitchedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteId;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteValidityCannotExceedEndDate;
 import org.axonframework.commandhandling.CommandHandler;
@@ -53,19 +53,23 @@ class Opportunity {
     }
 
     @CommandHandler
-    public void handle(CreateQuoteCommand command) {
-        // TODO Emmett - Should the quote's valid until set a deadline that automatically rejects the quote?
-        if (command.getValidUntil().isAfter(endDate)) {
+    public void handle(PitchQuoteCommand command) {
+        Instant validUntil = command.getValidUntil();
+        if (validUntil.isAfter(endDate)) {
             throw new QuoteValidityCannotExceedEndDate(command.getName(), endDate, opportunityId);
         }
         if (quotes.values().stream().anyMatch(Quote::isApproved)) {
             throw OpportunityAlreadyHasApprovedQuoteException.createNewQuoteException(opportunityId);
         }
+
         if (quotes.isEmpty()) {
             // TODO Emmett - The first quote moves the Opportunity's stage to PITCHED I assume?
             apply(new OpportunityPitchedEvent(opportunityId));
         }
-        apply(new QuoteCreatedEvent(opportunityId, command.getName(), command.getValidUntil(), command.getProducts()));
+        QuoteId quoteId = new QuoteId();
+        apply(new QuotePitchedEvent(
+                opportunityId, quoteId, command.getName(), validUntil, command.getProducts()
+        ));
     }
 
     @CommandHandler
@@ -97,7 +101,7 @@ class Opportunity {
     }
 
     @EventSourcingHandler
-    public void on(QuoteCreatedEvent event) {
+    public void on(QuotePitchedEvent event) {
         QuoteId quoteId = event.getQuoteId();
         quotes.put(quoteId, new Quote(quoteId, opportunityId, event.getName()));
     }

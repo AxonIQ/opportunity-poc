@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class QuoteCreatedEvent {
+public class QuotePitchedEvent {
 
     private final OpportunityId opportunityId;
     private final QuoteId quoteId;
@@ -16,14 +16,14 @@ public class QuoteCreatedEvent {
     private final Instant validUntil;
     private final List<ProductLineItem> products;
 
-    public QuoteCreatedEvent(OpportunityId opportunityId,
+    public QuotePitchedEvent(OpportunityId opportunityId,
                              String name,
                              Instant validUntil,
                              List<ProductLineItem> products) {
         this(opportunityId, new QuoteId(UUID.randomUUID()), name, validUntil, products);
     }
 
-    public QuoteCreatedEvent(OpportunityId opportunityId,
+    public QuotePitchedEvent(OpportunityId opportunityId,
                              QuoteId quoteId,
                              String name,
                              Instant validUntil,
@@ -63,7 +63,7 @@ public class QuoteCreatedEvent {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        QuoteCreatedEvent that = (QuoteCreatedEvent) o;
+        QuotePitchedEvent that = (QuotePitchedEvent) o;
         return Objects.equals(opportunityId, that.opportunityId)
                 && Objects.equals(quoteId, that.quoteId)
                 && Objects.equals(name, that.name)
@@ -78,7 +78,7 @@ public class QuoteCreatedEvent {
 
     @Override
     public String toString() {
-        return "QuoteCreatedEvent{" +
+        return "QuotePitchedEvent{" +
                 "opportunityId=" + opportunityId +
                 ", quoteId=" + quoteId +
                 ", name='" + name + '\'' +

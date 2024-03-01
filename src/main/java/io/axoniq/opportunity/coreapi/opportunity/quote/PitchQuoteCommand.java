@@ -8,20 +8,19 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
-// TODO Emmett - Or call this PitchQuoteCommand, as sellers are pitching a quote (from shared doc)?
-public class CreateQuoteCommand {
+public class PitchQuoteCommand {
 
     @TargetAggregateIdentifier
     private final OpportunityId opportunityId;
     private final String name;
     private final Instant validUntil;
-    // TODO Emmett - Are all the products part of the Quote ASAP? Or can they also be added later?
+    // TODO React to these line items in the sage
     private final List<ProductLineItem> products;
 
-    public CreateQuoteCommand(OpportunityId opportunityId,
-                              String name,
-                              Instant validUntil,
-                              List<ProductLineItem> products) {
+    public PitchQuoteCommand(OpportunityId opportunityId,
+                             String name,
+                             Instant validUntil,
+                             List<ProductLineItem> products) {
         this.opportunityId = opportunityId;
         this.name = name;
         this.validUntil = validUntil;
@@ -52,7 +51,7 @@ public class CreateQuoteCommand {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CreateQuoteCommand that = (CreateQuoteCommand) o;
+        PitchQuoteCommand that = (PitchQuoteCommand) o;
         return Objects.equals(opportunityId, that.opportunityId)
                 && Objects.equals(name, that.name)
                 && Objects.equals(validUntil, that.validUntil)
@@ -66,7 +65,7 @@ public class CreateQuoteCommand {
 
     @Override
     public String toString() {
-        return "CreateQuoteCommand{" +
+        return "PitchQuoteCommand{" +
                 "opportunityId=" + opportunityId +
                 ", name='" + name + '\'' +
                 ", validUntil=" + validUntil +
