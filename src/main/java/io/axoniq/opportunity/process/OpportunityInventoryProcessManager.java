@@ -37,7 +37,7 @@ class OpportunityInventoryProcessManager {
     @StartSaga
     @SagaEventHandler(associationProperty = "opportunityId")
     public void on(OpportunityOpenedEvent event) {
-        opportunityId = event.getOpportunityId();
+        opportunityId = event.opportunityId();
     }
 
     @SagaEventHandler(associationProperty = "opportunityId")

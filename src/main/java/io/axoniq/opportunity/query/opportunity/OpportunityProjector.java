@@ -18,17 +18,17 @@ class OpportunityProjector {
 
     @EventHandler
     public void on(OpportunityOpenedEvent event) {
-        repository.save(new OpportunityView(event.getOpportunityId().toString(),
-                                            event.getAccountId().toString(),
-                                            event.getName(),
-                                            event.getEndDate()));
+        repository.save(new OpportunityView(event.opportunityId().toString(),
+                                            event.accountId().toString(),
+                                            event.name(),
+                                            event.endDate()));
     }
 
     @EventHandler
     public void on(OpportunityStageChangedEvent event) {
-        repository.findById(event.getOpportunityId().toString())
+        repository.findById(event.opportunityId().toString())
                   .map(opportunityView -> {
-                      opportunityView.setStage(event.getStage());
+                      opportunityView.setStage(event.stage());
                       return opportunityView;
                   });
     }

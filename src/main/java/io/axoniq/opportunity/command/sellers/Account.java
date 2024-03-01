@@ -42,9 +42,9 @@ class Account {
                        DeadlineManager deadlineManager) throws Exception {
         createNew(
                 Opportunity.class,
-                () -> new Opportunity(command.getOpportunityId(), accountId, command.getName(), command.getEndDate())
+                () -> new Opportunity(command.opportunityId(), accountId, command.name(), command.endDate())
         );
-        deadlineManager.schedule(command.getEndDate(), OPPORTUNITY_ENDED);
+        deadlineManager.schedule(command.endDate(), OPPORTUNITY_ENDED);
     }
 
     @EventSourcingHandler

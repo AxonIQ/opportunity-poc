@@ -2,7 +2,7 @@ package io.axoniq.opportunity.coreapi.opportunity;
 
 public interface OpportunityStageChangedEvent {
 
-    OpportunityId getOpportunityId();
+    OpportunityId opportunityId();
 
-    OpportunityStage getStage();
+    OpportunityStage stage();
 }

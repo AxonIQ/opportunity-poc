@@ -111,9 +111,9 @@ class Opportunity {
 
     @EventSourcingHandler
     public void on(OpportunityOpenedEvent event) {
-        opportunityId = event.getOpportunityId();
+        opportunityId = event.opportunityId();
         stage = RFP;
-        endDate = event.getEndDate();
+        endDate = event.endDate();
         quotes = new HashMap<>();
     }
 
