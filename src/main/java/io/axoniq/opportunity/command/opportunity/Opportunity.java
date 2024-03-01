@@ -58,7 +58,7 @@ class Opportunity {
     }
 
     @CommandHandler
-    public void handle(PitchQuoteCommand command, DeadlineManager deadlineManager) {
+    public String handle(PitchQuoteCommand command, DeadlineManager deadlineManager) {
         Instant validUntil = command.validUntil();
         if (validUntil.isAfter(endDate)) {
             throw new QuoteValidityCannotExceedEndDate(command.name(), endDate, opportunityId);
@@ -78,6 +78,7 @@ class Opportunity {
                 opportunityId, quoteId, command.name(), validUntil, command.products()
         ));
         deadlineManager.schedule(validUntil, QUOTE_ENDED, quoteId);
+        return quoteId.toString();
     }
 
     @CommandHandler

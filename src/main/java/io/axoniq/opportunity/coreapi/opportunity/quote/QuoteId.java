@@ -11,6 +11,10 @@ public class QuoteId {
         this(UUID.randomUUID());
     }
 
+    public QuoteId(String identifier) {
+        this(UUID.fromString(identifier));
+    }
+
     public QuoteId(UUID identifier) {
         this.identifier = identifier;
     }
