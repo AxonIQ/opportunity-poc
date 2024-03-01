@@ -33,6 +33,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 class Opportunity {
 
     static final String OPPORTUNITY_ENDED = "Opportunity Ended";
+    static final String QUOTE_ENDED = "Quote Ended";
 
     @AggregateIdentifier
     private OpportunityId opportunityId;
@@ -53,7 +54,7 @@ class Opportunity {
     }
 
     @CommandHandler
-    public void handle(PitchQuoteCommand command) {
+    public void handle(PitchQuoteCommand command, DeadlineManager deadlineManager) {
         Instant validUntil = command.getValidUntil();
         if (validUntil.isAfter(endDate)) {
             throw new QuoteValidityCannotExceedEndDate(command.getName(), endDate, opportunityId);
@@ -70,6 +71,7 @@ class Opportunity {
         apply(new QuotePitchedEvent(
                 opportunityId, quoteId, command.getName(), validUntil, command.getProducts()
         ));
+        deadlineManager.schedule(validUntil, QUOTE_ENDED, quoteId);
     }
 
     @CommandHandler
@@ -83,6 +85,11 @@ class Opportunity {
         apply(new QuoteApprovedEvent(opportunityId, command.getQuoteId()));
         apply(new OpportunityClosedWonEvent(opportunityId));
         deadlineManager.cancelAllWithinScope(OPPORTUNITY_ENDED);
+    }
+
+    @DeadlineHandler(deadlineName = QUOTE_ENDED)
+    public void on(QuoteId quoteId) {
+        apply(new QuoteRejectedEvent(opportunityId, quoteId));
     }
 
     @DeadlineHandler(deadlineName = OPPORTUNITY_ENDED)
