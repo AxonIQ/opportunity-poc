@@ -3,9 +3,14 @@ package io.axoniq.opportunity.coreapi.account;
 import java.util.Objects;
 import java.util.UUID;
 
+// TODO Emmett - Would you prefer the name account, or seller?
 public class AccountId {
 
     private final UUID identifier;
+
+    public AccountId(String identifier) {
+        this(UUID.fromString(identifier));
+    }
 
     public AccountId(UUID identifier) {
         this.identifier = identifier;
