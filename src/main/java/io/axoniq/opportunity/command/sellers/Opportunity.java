@@ -75,7 +75,6 @@ class Opportunity {
         }
 
         if (quotes.isEmpty()) {
-            // TODO Emmett - The first quote moves the Opportunity's stage to PITCHED I assume?
             apply(new OpportunityPitchedEvent(opportunityId));
         }
         QuoteId quoteId = new QuoteId();
@@ -112,7 +111,6 @@ class Opportunity {
 
     @EventSourcingHandler
     public void on(OpportunityOpenedEvent event) {
-        // Add explaining comment
         opportunityId = event.getOpportunityId();
         stage = RFP;
         endDate = event.getEndDate();

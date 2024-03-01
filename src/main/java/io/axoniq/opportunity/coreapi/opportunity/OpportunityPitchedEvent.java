@@ -2,7 +2,6 @@ package io.axoniq.opportunity.coreapi.opportunity;
 
 import java.util.Objects;
 
-// TODO Emmett - Is this event interesting in its own right?
 public class OpportunityPitchedEvent implements OpportunityStageChangedEvent {
 
     private final OpportunityId opportunityId;

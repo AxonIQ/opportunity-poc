@@ -5,7 +5,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.util.Objects;
 
-// TODO Emmett - Does the RejectQuoteCommand need to life, or is the deadline for this sufficient?
+// TODO Use command for testing in the UI
 public class RejectQuoteCommand {
 
     @TargetAggregateIdentifier

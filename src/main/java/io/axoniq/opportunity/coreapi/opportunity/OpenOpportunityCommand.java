@@ -12,7 +12,6 @@ public class OpenOpportunityCommand {
     private final OpportunityId opportunityId;
     private final AccountId accountId;
     private final String name;
-    // TODO Emmett - Is it correct to assume the endDate is attached when the opportunity is opened?
     private final Instant endDate;
 
     public OpenOpportunityCommand(OpportunityId opportunityId, AccountId accountId, String name, Instant endDate) {
