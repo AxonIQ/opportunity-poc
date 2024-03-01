@@ -30,7 +30,7 @@ class AccountProjector {
 
     @EventHandler
     public void on(AccountCreatedEvent event) {
-        repository.save(new AccountView(event.getAccountId().toString()));
+        repository.save(new AccountView(event.accountId().toString()));
     }
 
     @EventHandler

@@ -16,8 +16,8 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 import static org.axonframework.modelling.command.AggregateLifecycle.createNew;
 
 /**
- * Accounts are constructed by Sellers.
- * Although a Seller can have several Accounts, this demo does not reflect this for simplicity.
+ * Accounts are constructed by Sellers. Although a Seller can have several Accounts, this demo does not reflect this for
+ * simplicity.
  */
 @Aggregate
 class Account {
@@ -34,7 +34,7 @@ class Account {
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.ALWAYS)
     public void handle(CreateAccountCommand command) {
-        apply(new AccountCreatedEvent(command.getAccountId(), command.getName()));
+        apply(new AccountCreatedEvent(command.accountId(), command.name()));
     }
 
     @CommandHandler
@@ -49,6 +49,6 @@ class Account {
 
     @EventSourcingHandler
     public void on(AccountCreatedEvent event) {
-        accountId = event.getAccountId();
+        accountId = event.accountId();
     }
 }
