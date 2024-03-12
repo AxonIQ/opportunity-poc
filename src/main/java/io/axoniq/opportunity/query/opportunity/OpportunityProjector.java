@@ -6,6 +6,7 @@ import io.axoniq.opportunity.coreapi.opportunity.FindOpportunitiesInStageQuery;
 import io.axoniq.opportunity.coreapi.opportunity.FindOpportunityByNameQuery;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityId;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityOpenedEvent;
+import io.axoniq.opportunity.coreapi.opportunity.OpportunityStage;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityStageChangedEvent;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunitySummary;
 import io.axoniq.opportunity.coreapi.opportunity.quote.QuoteApprovedEvent;
@@ -32,11 +33,14 @@ class OpportunityProjector {
 
     @EventHandler
     public void on(OpportunityOpenedEvent event) {
-        repository.save(new OpportunityView(event.opportunityId().toString(),
-                                            event.accountId().toString(),
-                                            event.name(),
-                                            event.value(),
-                                            event.endDate()));
+        OpportunityView view = new OpportunityView();
+        view.setOpportunityId(event.opportunityId().toString());
+        view.setAccountId(event.accountId().toString());
+        view.setStage(OpportunityStage.RFP);
+        view.setName(event.name());
+        view.setValue(event.value());
+        view.setEndDate(event.endDate());
+        repository.save(view);
     }
 
     @EventHandler

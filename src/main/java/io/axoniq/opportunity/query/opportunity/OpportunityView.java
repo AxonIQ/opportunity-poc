@@ -21,15 +21,6 @@ class OpportunityView {
     private int value;
     private Instant endDate;
 
-    public OpportunityView(String opportunityId, String accountId, String name, int value, Instant endDate) {
-        this.opportunityId = opportunityId;
-        this.stage = OpportunityStage.RFP;
-        this.accountId = accountId;
-        this.name = name;
-        this.value = value;
-        this.endDate = endDate;
-    }
-
     public OpportunityView() {
         // Required no-arg constructor
     }
