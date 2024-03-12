@@ -1,4 +1,4 @@
-package io.axoniq.opportunity.query.deal.insights;
+package io.axoniq.opportunity.query.opportunity;
 
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityStage;
 import org.springframework.data.jpa.repository.JpaRepository;
