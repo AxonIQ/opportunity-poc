@@ -23,15 +23,11 @@ import org.springframework.context.annotation.Primary;
 class AxonConfiguration {
 
     @Bean
-    ObjectMapper objectMapper() {
-        return new ObjectMapper().registerModule(new JavaTimeModule())
-                                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-    }
-
-    @Bean
     @Primary
-    Serializer serializer(ObjectMapper objectMapper) {
+    Serializer serializer() {
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule())
+                                                      .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                                                      .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         return JacksonSerializer.builder()
                                 .objectMapper(objectMapper)
                                 .defaultTyping()
