@@ -2,8 +2,15 @@ package io.axoniq.opportunity.controller;
 
 import io.axoniq.opportunity.coreapi.account.AccountId;
 import io.axoniq.opportunity.coreapi.account.CreateAccountCommand;
+import io.axoniq.opportunity.coreapi.account.DealInsight;
+import io.axoniq.opportunity.coreapi.account.FindAllDealInsightsQuery;
+import io.axoniq.opportunity.coreapi.opportunity.FindOpportunitiesByAccountIdQuery;
+import io.axoniq.opportunity.coreapi.opportunity.FindOpportunitiesInStageQuery;
+import io.axoniq.opportunity.coreapi.opportunity.FindOpportunityByNameQuery;
 import io.axoniq.opportunity.coreapi.opportunity.OpenOpportunityCommand;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityId;
+import io.axoniq.opportunity.coreapi.opportunity.OpportunityStage;
+import io.axoniq.opportunity.coreapi.opportunity.OpportunitySummary;
 import io.axoniq.opportunity.coreapi.opportunity.quote.AddProductToQuoteCommand;
 import io.axoniq.opportunity.coreapi.opportunity.quote.ApproveQuoteCommand;
 import io.axoniq.opportunity.coreapi.opportunity.quote.PitchQuoteCommand;
@@ -12,7 +19,9 @@ import io.axoniq.opportunity.coreapi.opportunity.quote.RejectQuoteCommand;
 import io.axoniq.opportunity.coreapi.product.ProductId;
 import io.axoniq.opportunity.coreapi.product.ProductLineItem;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -104,5 +113,32 @@ class OpportunityController {
                                                @PathVariable("quoteId") String quoteId) {
         return commandGateway.send(new RejectQuoteCommand(new OpportunityId(opportunityId),
                                                           new QuoteId(quoteId)));
+    }
+
+    @GetMapping("/deal-insights")
+    public CompletableFuture<List<DealInsight>> getAllDealInsights() {
+        return queryGateway.query(new FindAllDealInsightsQuery(), ResponseTypes.multipleInstancesOf(DealInsight.class));
+    }
+
+    @GetMapping("/name/{name}")
+    public CompletableFuture<OpportunitySummary> getOpportunityByName(@PathVariable("name") String name) {
+        return queryGateway.query(new FindOpportunityByNameQuery(name),
+                                  ResponseTypes.instanceOf(OpportunitySummary.class));
+    }
+
+    @GetMapping("/account/{accountId}")
+    public CompletableFuture<List<OpportunitySummary>> getOpportunitiesByAccountId(
+            @PathVariable("accountId") String accountId
+    ) {
+        return queryGateway.query(new FindOpportunitiesByAccountIdQuery(new AccountId(accountId)),
+                                  ResponseTypes.multipleInstancesOf(OpportunitySummary.class));
+    }
+
+    @GetMapping("/stage/{stage}")
+    public CompletableFuture<List<OpportunitySummary>> getOpportunitiesByStage(
+            @PathVariable("stage") OpportunityStage stage
+    ) {
+        return queryGateway.query(new FindOpportunitiesInStageQuery(stage),
+                                  ResponseTypes.multipleInstancesOf(OpportunitySummary.class));
     }
 }
