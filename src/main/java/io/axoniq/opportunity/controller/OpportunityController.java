@@ -58,10 +58,10 @@ class OpportunityController {
                                                               new OpportunityId(),
                                                               dto.name(),
                                                               dto.value(),
-                                                              dto.endDate()));
+                                                              Instant.parse(dto.endDate())));
     }
 
-    record OpenOpportunityDto(String accountId, String name, int value, Instant endDate) {
+    record OpenOpportunityDto(String accountId, String name, int value, String endDate) {
 
     }
 
