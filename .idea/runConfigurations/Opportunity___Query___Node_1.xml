@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Opportunity - Query - Node 1" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Distributed">
+    <option name="ACTIVE_PROFILES" value="query" />
+    <additionalParameters>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="server.port" />
+        <option name="value" value="6003" />
+      </param>
+    </additionalParameters>
+    <module name="opportunity-poc" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="io.axoniq.opportunity.OpportunityPocApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
