@@ -47,9 +47,10 @@ class OpportunityController {
         this.queryGateway = queryGateway;
     }
 
-    @PostMapping("/create/account/{name}")
-    public CompletableFuture<String> createAccount(@PathVariable("name") String name) {
-        return commandGateway.send(new CreateAccountCommand(new AccountId(), name));
+    @PostMapping("/create/account/{accountId}/{name}")
+    public CompletableFuture<String> createAccount(@PathVariable("accountId") String accountId,
+                                                   @PathVariable("name") String name) {
+        return commandGateway.send(new CreateAccountCommand(new AccountId(accountId), name));
     }
 
     @PostMapping("/open")
