@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.config.ConfigurationScopeAwareProvider;
 import org.axonframework.config.ConfigurerModule;
+import org.axonframework.deadline.DeadlineManager;
+import org.axonframework.deadline.SimpleDeadlineManager;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.lifecycle.Phase;
 import org.axonframework.messaging.Message;
@@ -63,5 +66,12 @@ class AxonConfiguration {
             configurer.eventProcessing()
                       .registerDefaultHandlerInterceptor((c, processorName) -> loggingInterceptor);
         };
+    }
+
+    @Bean
+    DeadlineManager deadlineManager(org.axonframework.config.Configuration configuration) {
+        return SimpleDeadlineManager.builder()
+                                    .scopeAwareProvider(new ConfigurationScopeAwareProvider(configuration))
+                                    .build();
     }
 }
