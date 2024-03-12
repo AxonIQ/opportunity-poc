@@ -38,7 +38,7 @@ class OpportunityProjector {
         view.setAccountId(event.accountId().toString());
         view.setStage(OpportunityStage.RFP);
         view.setName(event.name());
-        view.setValue(event.value());
+        view.setOpportunityValue(event.value());
         view.setEndDate(event.endDate());
         repository.save(view);
     }
@@ -56,7 +56,7 @@ class OpportunityProjector {
     public void on(QuoteApprovedEvent event) {
         repository.findById(event.opportunityId().toString())
                   .map(view -> {
-                      view.setValue(event.value());
+                      view.setOpportunityValue(event.value());
                       return view;
                   });
     }
@@ -89,7 +89,7 @@ class OpportunityProjector {
                 new AccountId(view.getAccountId()),
                 view.getStage(),
                 view.getName(),
-                view.getValue(),
+                view.getOpportunityValue(),
                 view.getEndDate()
         );
     }

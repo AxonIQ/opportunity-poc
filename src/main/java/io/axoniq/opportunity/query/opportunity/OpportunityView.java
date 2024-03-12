@@ -18,7 +18,7 @@ class OpportunityView {
     @Enumerated(EnumType.STRING)
     private OpportunityStage stage;
     private String name;
-    private int value;
+    private int opportunityValue;
     private Instant endDate;
 
     public OpportunityView() {
@@ -57,12 +57,12 @@ class OpportunityView {
         this.name = name;
     }
 
-    public int getValue() {
-        return value;
+    public int getOpportunityValue() {
+        return opportunityValue;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setOpportunityValue(int value) {
+        this.opportunityValue = value;
     }
 
     public Instant getEndDate() {
@@ -82,7 +82,7 @@ class OpportunityView {
             return false;
         }
         OpportunityView that = (OpportunityView) o;
-        return value == that.value
+        return opportunityValue == that.opportunityValue
                 && Objects.equals(opportunityId, that.opportunityId)
                 && Objects.equals(accountId, that.accountId)
                 && stage == that.stage
@@ -92,7 +92,7 @@ class OpportunityView {
 
     @Override
     public int hashCode() {
-        return Objects.hash(opportunityId, accountId, stage, name, value, endDate);
+        return Objects.hash(opportunityId, accountId, stage, name, opportunityValue, endDate);
     }
 
     @Override
@@ -102,7 +102,7 @@ class OpportunityView {
                 ", accountId='" + accountId + '\'' +
                 ", stage=" + stage +
                 ", name='" + name + '\'' +
-                ", value=" + value +
+                ", opportunityValue=" + opportunityValue +
                 ", endDate=" + endDate +
                 '}';
     }
