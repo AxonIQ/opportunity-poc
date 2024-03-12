@@ -97,7 +97,7 @@ class OpportunityController {
                                                                 fromDto(product)));
     }
 
-    record ProductLineItemDto(ProductId productId,
+    record ProductLineItemDto(String productId,
                               int catalogId,
                               int quantity,
                               int amount) {
@@ -105,7 +105,7 @@ class OpportunityController {
     }
 
     static ProductLineItem fromDto(ProductLineItemDto dto) {
-        return new ProductLineItem(dto.productId(), dto.catalogId(), dto.quantity(), dto.amount());
+        return new ProductLineItem(new ProductId(dto.productId()), dto.catalogId(), dto.quantity(), dto.amount());
     }
 
     @PostMapping("/{opportunityId}/quote/{quoteId}/approve")
