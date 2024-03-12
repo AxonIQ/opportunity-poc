@@ -56,13 +56,17 @@ class OpportunityController {
     @PostMapping("/open")
     public CompletableFuture<String> openOpportunity(@RequestBody OpenOpportunityDto dto) {
         return commandGateway.send(new OpenOpportunityCommand(new AccountId(dto.accountId()),
-                                                              new OpportunityId(),
+                                                              new OpportunityId(dto.opportunityId()),
                                                               dto.name(),
                                                               dto.value(),
                                                               Instant.parse(dto.endDate())));
     }
 
-    record OpenOpportunityDto(String accountId, String name, int value, String endDate) {
+    record OpenOpportunityDto(String accountId,
+                              String opportunityId,
+                              String name,
+                              int value,
+                              String endDate) {
 
     }
 
