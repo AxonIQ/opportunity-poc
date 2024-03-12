@@ -74,7 +74,7 @@ class OpportunityController {
     public CompletableFuture<String> pitchQuote(@RequestBody PitchQuoteDto dto) {
         return commandGateway.send(new PitchQuoteCommand(new OpportunityId(dto.opportunityId()),
                                                          dto.name(),
-                                                         dto.validUntil(),
+                                                         Instant.parse(dto.validUntil()),
                                                          dto.products()
                                                             .stream()
                                                             .map(OpportunityController::fromDto)
@@ -83,7 +83,7 @@ class OpportunityController {
 
     record PitchQuoteDto(String opportunityId,
                          String name,
-                         Instant validUntil,
+                         String validUntil,
                          List<ProductLineItemDto> products) {
 
     }
