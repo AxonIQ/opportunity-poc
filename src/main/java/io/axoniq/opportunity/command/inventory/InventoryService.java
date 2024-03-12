@@ -8,15 +8,20 @@ import io.axoniq.opportunity.coreapi.product.ReserveProductCommand;
 import org.axonframework.commandhandling.CommandHandler;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Profile("command")
 @Service
+@RequestMapping("/inventory")
+@RestController
 class InventoryService {
 
-    // TODO Add means to fill inventory
     private final Map<ProductId, Integer> inventory = new ConcurrentHashMap<>();
 
     @CommandHandler
@@ -37,5 +42,14 @@ class InventoryService {
     @CommandHandler
     public void handle(ReleaseReservationForProductCommand command) {
         inventory.computeIfPresent(command.productId(), (productId, stock) -> stock + command.amount());
+    }
+
+    @PostMapping("/add")
+    public void addInventory(@RequestBody ProductDto product) {
+        inventory.put(new ProductId(product.productId()), product.amount());
+    }
+
+    record ProductDto(String productId, int amount) {
+
     }
 }
