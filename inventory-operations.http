@@ -1,0 +1,99 @@
+### Fill for Node 1 - Required because the Inventory storage is in-memory for simplicty if the PoC.
+
+POST http://localhost:6001/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "1618c594-af9f-4234-b90b-637c51b54c22",
+  "amount": 5
+}
+
+###
+
+POST http://localhost:6001/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "4595aac1-36a8-4f95-9857-9784fc7214cf",
+  "amount": 10
+}
+
+###
+
+POST http://localhost:6001/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "57c99def-b88b-41b0-8ae9-0e5b69ee0f3d",
+  "amount": 2
+}
+
+###
+
+POST http://localhost:6001/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "74fed045-96fe-4375-9736-98e789644836",
+  "amount": 1
+}
+
+###
+
+POST http://localhost:6001/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "c8da3f64-b111-472e-bbac-396dbe99b57f",
+  "amount": 0
+}
+
+### Fill for Node 2 - Required because the Inventory storage is in-memory for simplicty if the PoC.
+
+POST http://localhost:6002/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "1618c594-af9f-4234-b90b-637c51b54c22",
+  "amount": 5
+}
+
+###
+
+POST http://localhost:6002/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "4595aac1-36a8-4f95-9857-9784fc7214cf",
+  "amount": 10
+}
+
+###
+
+POST http://localhost:6002/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "57c99def-b88b-41b0-8ae9-0e5b69ee0f3d",
+  "amount": 2
+}
+
+###
+
+POST http://localhost:6002/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "74fed045-96fe-4375-9736-98e789644836",
+  "amount": 1
+}
+
+###
+
+POST http://localhost:6002/inventory/add
+Content-Type: application/json
+
+{
+  "productId": "c8da3f64-b111-472e-bbac-396dbe99b57f",
+  "amount": 0
+}
