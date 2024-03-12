@@ -7,7 +7,7 @@ import io.axoniq.opportunity.coreapi.account.FindAllDealInsightsQuery;
 import io.axoniq.opportunity.coreapi.opportunity.FindOpportunitiesByAccountIdQuery;
 import io.axoniq.opportunity.coreapi.opportunity.FindOpportunitiesInStageQuery;
 import io.axoniq.opportunity.coreapi.opportunity.FindOpportunityByNameQuery;
-import io.axoniq.opportunity.coreapi.opportunity.OpenOpportunityCommand;
+import io.axoniq.opportunity.coreapi.account.OpenOpportunityCommand;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityId;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityStage;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunitySummary;
@@ -54,8 +54,8 @@ class OpportunityController {
 
     @PostMapping("/open")
     public CompletableFuture<String> openOpportunity(@RequestBody OpenOpportunityDto dto) {
-        return commandGateway.send(new OpenOpportunityCommand(new OpportunityId(),
-                                                              new AccountId(dto.accountId()),
+        return commandGateway.send(new OpenOpportunityCommand(new AccountId(dto.accountId()),
+                                                              new OpportunityId(),
                                                               dto.name(),
                                                               dto.value(),
                                                               dto.endDate()));

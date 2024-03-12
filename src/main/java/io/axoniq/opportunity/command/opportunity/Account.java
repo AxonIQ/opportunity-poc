@@ -3,7 +3,7 @@ package io.axoniq.opportunity.command.opportunity;
 import io.axoniq.opportunity.coreapi.account.AccountCreatedEvent;
 import io.axoniq.opportunity.coreapi.account.AccountId;
 import io.axoniq.opportunity.coreapi.account.CreateAccountCommand;
-import io.axoniq.opportunity.coreapi.opportunity.OpenOpportunityCommand;
+import io.axoniq.opportunity.coreapi.account.OpenOpportunityCommand;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.deadline.DeadlineManager;
 import org.axonframework.eventsourcing.EventSourcingHandler;
