@@ -77,6 +77,7 @@ class DealInsightsProjector {
                          .stream()
                          .map(view -> new DealInsight(
                                  new AccountId(view.getAccountId()),
+                                 view.getName(),
                                  view.getOpenDeals(),
                                  totalWeightedOpenDealAmountFor(new AccountId(view.getAccountId())),
                                  view.getLastDealDate()
