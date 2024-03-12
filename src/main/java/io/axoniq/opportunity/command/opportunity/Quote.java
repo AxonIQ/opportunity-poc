@@ -45,7 +45,6 @@ class Quote {
                              .orElse(0);
     }
 
-    // TODO this command needs to be pre-validated before sending, as it has an inventory requirement
     @CommandHandler
     public void handle(AddProductToQuoteCommand command) {
         apply(new ProductAddedToQuoteEvent(opportunityId, quoteId, command.product()));
