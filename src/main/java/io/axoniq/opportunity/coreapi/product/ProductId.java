@@ -11,6 +11,10 @@ public class ProductId {
         this(UUID.randomUUID());
     }
 
+    public ProductId(String identifier) {
+        this(UUID.fromString(identifier));
+    }
+
     public ProductId(UUID identifier) {
         this.identifier = identifier;
     }
