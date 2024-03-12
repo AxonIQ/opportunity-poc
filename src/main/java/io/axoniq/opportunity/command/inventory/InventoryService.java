@@ -6,11 +6,13 @@ import io.axoniq.opportunity.coreapi.product.ProductId;
 import io.axoniq.opportunity.coreapi.product.ReleaseReservationForProductCommand;
 import io.axoniq.opportunity.coreapi.product.ReserveProductCommand;
 import org.axonframework.commandhandling.CommandHandler;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Profile("command")
 @Service
 class InventoryService {
 

@@ -24,6 +24,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.modelling.command.AggregateMember;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import java.util.Map;
 import static io.axoniq.opportunity.coreapi.opportunity.OpportunityStage.*;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
+@Profile("command")
 @Aggregate
 class Opportunity {
 

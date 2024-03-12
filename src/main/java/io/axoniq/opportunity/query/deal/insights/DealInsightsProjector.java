@@ -16,6 +16,7 @@ import org.axonframework.eventhandling.Timestamp;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.queryhandling.QueryHandler;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
+@Profile("query")
 @Service
 @ProcessingGroup("deal-insights")
 class DealInsightsProjector {

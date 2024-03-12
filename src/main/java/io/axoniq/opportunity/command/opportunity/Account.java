@@ -11,6 +11,7 @@ import org.axonframework.modelling.command.AggregateCreationPolicy;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.CreationPolicy;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.springframework.context.annotation.Profile;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 import static org.axonframework.modelling.command.AggregateLifecycle.createNew;
@@ -19,6 +20,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.createNew;
  * Accounts are constructed by Sellers. Although a Seller can have several Accounts, this demo does not reflect this for
  * simplicity.
  */
+@Profile("command")
 @Aggregate
 class Account {
 
