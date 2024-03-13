@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Opportunity - All" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="ui,command,query,process" />
     <additionalParameters>
       <param>
         <option name="enabled" value="true" />
