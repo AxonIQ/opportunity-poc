@@ -1,6 +1,8 @@
 package io.axoniq.opportunity.process;
 
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityClosedLostEvent;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityClosedWonEvent;
 import io.axoniq.opportunity.coreapi.opportunity.OpportunityId;
@@ -31,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OpportunityInventoryProcessManager {
 
     private OpportunityId opportunityId;
-    private final Map<QuoteId, Map<ProductId, Integer>> reservedProductsPerQuote = new ConcurrentHashMap<>();
+    private Map<QuoteId, Map<ProductId, Integer>> reservedProductsPerQuote = new ConcurrentHashMap<>();
 
     @Autowired
     private transient CommandGateway commandGateway;
@@ -96,5 +98,31 @@ public class OpportunityInventoryProcessManager {
     @SagaEventHandler(associationProperty = "opportunityId")
     public void on(OpportunityClosedWonEvent event) {
         // Do nothing - @EndSaga already cleans this process
+    }
+
+    public OpportunityInventoryProcessManager() {
+        // Required by Jackson's ObjectMapper for de-/serialization
+    }
+
+    @JsonGetter
+    public OpportunityId getOpportunityId() {
+        return opportunityId;
+    }
+
+    @JsonSetter
+    public void setOpportunityId(OpportunityId opportunityId) {
+        this.opportunityId = opportunityId;
+    }
+
+    @JsonGetter
+    public Map<QuoteId, Map<ProductId, Integer>> getReservedProductsPerQuote() {
+        return reservedProductsPerQuote;
+    }
+
+    @JsonSetter
+    public void setReservedProductsPerQuote(
+            Map<QuoteId, Map<ProductId, Integer>> reservedProductsPerQuote
+    ) {
+        this.reservedProductsPerQuote = reservedProductsPerQuote;
     }
 }
