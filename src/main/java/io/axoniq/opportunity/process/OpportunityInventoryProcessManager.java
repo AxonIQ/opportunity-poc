@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Profile("process")
 @Saga
-class OpportunityInventoryProcessManager {
+public class OpportunityInventoryProcessManager {
 
     private OpportunityId opportunityId;
     private final Map<QuoteId, Map<ProductId, Integer>> reservedProductsPerQuote = new ConcurrentHashMap<>();
