@@ -94,7 +94,7 @@ Content-Type: application/json
 }
 
 ### Add product to Steven's Quote, which fails as the product is not known
-POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/58600df5-ac6e-4a2b-8529-5322ef357497/add
+POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/{{quoteId}}/add
 Content-Type: application/json
 
 {
@@ -105,7 +105,7 @@ Content-Type: application/json
 }
 
 ### Add product to Steven's Quote, which fails as there are insufficient of these product in stock
-POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/c4dcd3ea-6ac0-4be4-bd65-755582e7afc1/add
+POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/{{quoteId}}/add
 Content-Type: application/json
 
 {
@@ -116,7 +116,7 @@ Content-Type: application/json
 }
 
 ### Add product to Ted's Quote, successfully
-POST http://localhost:6006/opportunity/4b8a7047-2ebd-4d79-b835-111222333444/quote/f01b186c-d5a2-4862-a71c-380886d3da11/add
+POST http://localhost:6006/opportunity/4b8a7047-2ebd-4d79-b835-111222333444/quote/{{quoteId}}/add
 Content-Type: application/json
 
 {
@@ -127,10 +127,10 @@ Content-Type: application/json
 }
 
 ### Approve Ted's Quote
-POST http://localhost:6006/opportunity/4b8a7047-2ebd-4d79-b835-111222333444/quote/f01b186c-d5a2-4862-a71c-380886d3da11/approve
+POST http://localhost:6006/opportunity/4b8a7047-2ebd-4d79-b835-111222333444/quote/{{quoteId}}/approve
 
 ### Reject Steven's Quote
-POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/c4dcd3ea-6ac0-4be4-bd65-755582e7afc1/reject
+POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/{{quoteId}}/reject
 
 ###
 # Queries
