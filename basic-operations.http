@@ -93,9 +93,19 @@ Content-Type: application/json
   ]
 }
 
-### TODO show that this fails and hits the NotificationSerivce logger...
+### Add product to Steven's Quote, which fails as the product is not known
+POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/58600df5-ac6e-4a2b-8529-5322ef357497/add
+Content-Type: application/json
+
+{
+  "productId": "00000000-0000-0000-0000-000000000000",
+  "catalogId": -1,
+  "quantity": 10,
+  "amount": 600
+}
+
 ### Add product to Steven's Quote, which fails as there are insufficient of these product in stock
-POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/e252547d-a5c0-4b8b-89fe-2beffdd24cad/add
+POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/c4dcd3ea-6ac0-4be4-bd65-755582e7afc1/add
 Content-Type: application/json
 
 {
@@ -120,7 +130,7 @@ Content-Type: application/json
 POST http://localhost:6006/opportunity/4b8a7047-2ebd-4d79-b835-111222333444/quote/f01b186c-d5a2-4862-a71c-380886d3da11/approve
 
 ### Reject Steven's Quote
-POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/e252547d-a5c0-4b8b-89fe-2beffdd24cad/reject
+POST http://localhost:6006/opportunity/2718e75e-a70d-4d61-8e30-999888777666/quote/c4dcd3ea-6ac0-4be4-bd65-755582e7afc1/reject
 
 ###
 # Queries
