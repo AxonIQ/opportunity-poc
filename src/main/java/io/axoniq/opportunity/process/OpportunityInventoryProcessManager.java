@@ -64,7 +64,7 @@ public class OpportunityInventoryProcessManager {
 
         commandGateway.send(new ReserveProductCommand(productId, product.amount()))
                       .exceptionally(e -> {
-                          commandGateway.send(new RemoveProductFromQuoteCommand(
+                          commandGateway.sendAndWait(new RemoveProductFromQuoteCommand(
                                   opportunityId, quoteId, productId, e.getMessage()
                           ));
                           return null;
